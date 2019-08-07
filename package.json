@@ -1,0 +1,23 @@
+{
+  "name": "pbworks-offline-addon",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "typescript": "^3.5.3",
+    "web-ext-types": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeptunianEclipse/pbworks-offline-addon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NeptunianEclipse/pbworks-offline-addon/issues"
+  },
+  "homepage": "https://github.com/NeptunianEclipse/pbworks-offline-addon#readme"
+}

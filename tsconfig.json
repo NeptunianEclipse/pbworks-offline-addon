@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "allowJs": true,
+        "target": "es6",
+        "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
