@@ -1,0 +1,23 @@
+html, body {
+    width: 250px;
+}
+
+.hidden {
+    display: none;
+}
+
+.button{
+    margin: 3% auto;
+    padding: 4px;
+    text-align: center;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.set:hover {
+    background-color: #CFF2F2;
+}
+
+.set{
+    background-color: #E5F2F2;
+}
