@@ -1,16 +1,19 @@
-
+console.log("begin");
 document.addEventListener("click", function (e) {
-    if(!e.target.classList.contains("button set")){
+    if (!(e.target.tagName === "BUTTON")) {
+        console.log(e.target.tagName);
         return;
     }
 
-    let url_download = "http://confocal-manawatu.pbworks.com/w/page/16346911/Top";
-    let url_view_modify = "http://www.massey.ac.nz/massey/home.cfm" // not true, need to change
+    console.log("click button");
+
+    let url_download = "http://confocal-manawatu.pbworks.com/w/page/16346911/Top"; // maybe change later
+    let url_view_modify = "http://www.massey.ac.nz/massey/home.cfm";// not true, need to change
 
     let chosenPage;
-    if(e.target.textContent === "Download Pages"){
+    if (e.target.textContent === "Download Pages") {
         chosenPage = url_download
-    }else if(e.target.textContent === "View/Modify Local Pages"){
+    } else if (e.target.textContent === "View/Modify Local Pages") {
         chosenPage = url_view_modify;
     }
 

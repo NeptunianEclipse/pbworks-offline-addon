@@ -6,17 +6,19 @@
     <link href="CSS/Index.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<h2>welcome to use PBWork Addon!</h2>
-<p>Internet Status:<span id="internet_status"></span></p>
+<h1 id="addon_title">Welcome to use PBWork Addon!</h1>
+<p id="internet_status_outside">Internet Status:</p>
+<!--internet_status should use javascript to control-->
+<p id="internet_status">Offline</p>
 <div id="popup-content">
-    <div class="button set">Download Pages</div>
-    <div class="button set">View/Modify Local Pages</div>
+    <button class="download_pages">Download Pages</button>
+    <button class="view_modify">View/Modify Local Pages</button>
 </div>
 
 <div class="hidden" id="error-content">
     <p>Can't use PBwork addon in this web page.</p>
 </div>
 
-<!--<script src="JS/Index.js"></script>-->
+<script src="JS/Index.js"></script>
 </body>
 </html>
