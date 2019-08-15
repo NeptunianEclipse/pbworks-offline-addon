@@ -19,13 +19,6 @@ html, body {
     text-align: center;
 }
 
-#internet_status {
-    font-size: 1.2em;
-    color: red;
-    text-align: center;
-}
-
-
 Button {
     -moz-box-shadow: inset 0 1px 0 0 #54a3f7;
     -webkit-box-shadow: inset 0 1px 0 0 #54a3f7;
