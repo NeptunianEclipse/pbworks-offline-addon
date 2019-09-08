@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="save.js"></script>
+
+<h1>IndexedDB storing</h1>
+<div id="msg">
+</div>
+
+<form id="register-form">
+  <table>
+	<tbody>
+	  <tr>
+		<td>
+		  <label for="pub-title" class="required">
+			Title:
+		  </label>
+		</td>
+		<td>
+		  <input type="text" id="pub-title" name="pub-title" />
+		</td>
+	  </tr>
+	  <tr>
+		<td>
+		  <label for="pub-oid" class="required">
+			ID:
+			<span class="note">unique</span>:
+		  </label>
+		</td>
+		<td>
+		  <input type="text" id="pub-oid" name="pub-oid"/>
+		</td>
+	  </tr>
+	</tbody>
+	<tbody>
+	  <tr>
+		<td>
+		  <label for="pub-file">
+			File:
+		  </label>
+		</td>
+		<td>
+		  <input type="file" id="pub-file" accept="file/*"/>
+		</td>
+	  </tr>
+	  <tr>
+		<td>
+		  <label for="pub-content-url">
+			Online-file URL:
+		  </label>
+		</td>
+		<td>
+		  <input type="text" id="pub-content-url" name="pub-content-url"/>
+		</td>
+	  </tr>
+	</tbody>
+  </table>
+
+  <div class="button-pane">
+	<input type="button" id="add-button" value="Add Store" />
+	<input type="reset" id="register-form-reset"/>
+	<span id="action-status"></span>
+  </div>
+</form>
+
+<form id="delete-form">
+  <div>
+	<label for="pub-biblioid-to-delete" class="required">
+	  Key (for example 1, 2, 3, etc.):
+	</label>
+	<input type="text" id="pub-oid-to-delete"
+		   name="pub-oid-to-delete" />
+  </div>
+  <div class="button-pane">
+	<input type="button" id="delete-button" value="Delete Store" />
+  </div>
+</form>
+
+<form id="search-form">
+  <div class="button-pane">
+	<input type="button" id="search-list-button"
+		   value="List database content" />
+  </div>
+</form>
+
+<div>
+  <div id="pub-msg">
+  </div>
+  <ul id="pub-list">
+  </ul>
+</div>
+
+</html>
