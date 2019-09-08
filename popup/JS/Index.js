@@ -12,13 +12,18 @@ function Online(callback){
 
 Online(function(flag){
     let internet_status_dom = $('#internet_status');
-    if(flag){
+    if(flag) {  //Online
         let css = {"font-size":"1.2em", "color":"blue","text-align":"center"};
         internet_status_dom.text("Online");
+        document.getElementById("online_homepage").disabled = false;
         internet_status_dom.css(css);
-    }else{
-        let css ={"font-size":"1.2em", "color":"blue", "text-align":"center"};
+    }else { //Offline
+        let css ={"font-size":"1.2em", "color":"red", "text-align":"center"};
         internet_status_dom.text("Offline");
+        document.getElementById("download_pages").disabled = true;
+        document.getElementById("download_pages").classList.add('unavailable');
+        document.getElementById("online_homepage").disabled = true;
+        document.getElementById("online_homepage").classList.add('unavailable');
         internet_status_dom.css(css);
     }
 });
@@ -33,11 +38,14 @@ document.addEventListener("click", function (e) {
 
     let url_download = "http://confocal-manawatu.pbworks.com/w/page/16346911/Top"; // maybe change later
     let url_view_modify = "Homepage.html";
+    let url_online = "http://159356group7.pbworks.com/";
 
     let chosenPage;
-    if (e.target.textContent === "Download Pages") {
+    if (e.target.textContent === "Download Current Page") {
         chosenPage = url_download
-    } else if (e.target.textContent === "View/Modify Local Pages") {
+    } else if (e.target.textContent === "Online Homepage") {
+        chosenPage = url_online;
+    } else if (e.target.textContent === "Local Homepage") {
         chosenPage = url_view_modify;
     }
 
