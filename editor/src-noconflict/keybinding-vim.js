@@ -138,7 +138,7 @@ ace.define("ace/keyboard/vim",["require","exports","module","ace/range","ace/lib
       this.ace.keyBinding.removeKeyboardHandler(multiSelectCommands.keyboardHandler);
     }
   };
-  this.operation = function(fn, force) {
+  this.operationGet = function(fn, force) {
     if (!force && this.curOp || force && this.curOp && this.curOp.force) {
       return fn();
     }
@@ -1587,7 +1587,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
           return function() {
             if ((command.operator || command.isEdit) && cm.getOption('readOnly'))
               return; // ace_patch
-            return cm.operation(function() {
+            return cm.operationGet(function() {
               cm.curOp.isVimOp = true;
               try {
                 if (command.type == 'keyToKey') {
@@ -3168,7 +3168,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
         cm.setCursor(curPosFinal);
       },
       undo: function(cm, actionArgs) {
-        cm.operation(function() {
+        cm.operationGet(function() {
           repeatFn(cm, CodeMirror.commands.undo, actionArgs.repeat)();
           cm.setCursor(cm.getCursor('anchor'));
         });
@@ -4534,7 +4534,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
     }
     function findNext(cm, prev, query, repeat) {
       if (repeat === undefined) { repeat = 1; }
-      return cm.operation(function() {
+      return cm.operationGet(function() {
         var pos = cm.getCursor();
         var cursor = cm.getSearchCursor(query, pos);
         for (var i = 0; i < repeat; i++) {
@@ -4594,7 +4594,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
     ExCommandDispatcher.prototype = {
       processCommand: function(cm, input, opt_params) {
         var that = this;
-        cm.operation(function () {
+        cm.operationGet(function () {
           cm.curOp.isVimOp = true;
           that._processCommand(cm, input, opt_params);
         });
@@ -5208,7 +5208,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
       var done = false;
       var lastPos = searchCursor.from();
       function replaceAll() {
-        cm.operation(function() {
+        cm.operationGet(function() {
           while (!done) {
             replace();
             next();
@@ -5257,7 +5257,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
           case 'A':
             var savedCallback = callback;
             callback = undefined;
-            cm.operation(replaceAll);
+            cm.operationGet(replaceAll);
             callback = savedCallback;
             break;
           case 'L':
@@ -5614,7 +5614,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
   }
   var handleKey = Vim.handleKey.bind(Vim);
   Vim.handleKey = function(cm, key, origin) {
-    return cm.operation(function() {
+    return cm.operationGet(function() {
       return handleKey(cm, key, origin);
     }, true);
   }
@@ -5654,7 +5654,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
       isHandled = Vim.handleKey(cm, key, origin);
     } else {
       var old = cloneVimState(vim);
-      cm.operation(function() {
+      cm.operationGet(function() {
         cm.ace.forEachSelection(function() {
           var sel = cm.ace.selection;
           cm.state.vim.lastHPos = sel.$desiredColumn == null ? sel.lead.column : sel.$desiredColumn;
@@ -5890,4 +5890,3 @@ dom.importCssString(".normal-mode .ace_cursor{\
                         }
                     });
                 })();
-            
