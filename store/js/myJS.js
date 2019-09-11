@@ -63,14 +63,15 @@ $(document).ready(function(){
         request.onsuccess=function(e){
             var tr="";
             var obj=e.target.result;
-			
+			console.info(obj.sfile);
             tr=tr+"<tr><td>"+(1)+"</td><td>"+obj.name+"</td><td class='p'>"+obj.ID
                 +"</td><td>"+obj.sfile+"</td><td>"+obj.date
-                +"</td><td><input type='button' value='delete'></td></tr>";
+                +"</td><td><input type='button' id='del' value='delete'>"
+				+"</td><td><input type='button' id='get' value='get'></td></tr>";
             //叠加表格内容
             $("#check span").html(
                 "<table width='100%'>"
-                +"<tr><td>序号</td><td>name</td><td>ID</td><td>file</td><td>time</td><td>operation</td></tr>"
+                +"<tr><td>序号</td><td>name</td><td>ID</td><td>file</td><td>time</td><td>operation</td><td>operation</td></tr>"
                 +tr+"</table>"
             );
         }
@@ -131,14 +132,14 @@ $(document).ready(function(){
                 var obj=cursor.value;
                 tr=tr+"<tr><td>"+(i+1)+"</td><td>"+obj.name+"</td><td class='p'>"+obj.ID
                     +"</td><td>"+obj.sfile+"</td><td>"+obj.date
-                    +"</td><td><input type='button' value='delete'></td></tr>";i=i+1;
+                    +"</td><td><input type='button' id='del' value='delete'></td><td><input type='button' id='get' value='get'></td></tr>";i=i+1;
                 cursor.continue();
             }else {
                 alert('遍历完成');
                 //叠加表格内容
                 $("#result span").html(
                     "<table width='100%'>"
-                    +"<tr><td>number</td><td>name</td><td>ID</td><td>file</td><td>time</td><td>operation</td></tr>"
+                    +"<tr><td>number</td><td>name</td><td>ID</td><td>file</td><td>time</td><td>operation</td><td>operation</td></tr>"
                     +tr+"</table>"
                 );
             }
@@ -174,11 +175,19 @@ $(document).ready(function(){
     });
     //单击删除按钮
     var myID;
-    $(document).on('click',"table input",function(){
+    $(document).on('click',"#del",function(){
         myID=$(this).parent().prev().prev().prev().text();
+		//console.info(myID);
         $(this).parent().parent().remove();
         remove(mydb);
     });
+	//单击获取按钮
+	var getFile;
+	$(document).on('click',"#get",function(){
+		getFile=$(this).parent().prev().prev().prev().file;
+		//console.info(getFile);
+		return getFile;
+	});
     //查询
     var n;
     $("#check input[type='button']").on('click',function(){
