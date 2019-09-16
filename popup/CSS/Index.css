@@ -36,6 +36,7 @@ Button {
     text-align: center;
     width: 70%;
     margin: 5px 5px 5px 15%;
+
 }
 
 Button:hover {
@@ -58,3 +59,4 @@ Button:active {
     background: rgb(43,116,173);
     background: linear-gradient(0deg, rgba(43,116,173,1) 0%, rgba(135,179,213,1) 75%);
 }
+

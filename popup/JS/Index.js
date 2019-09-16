@@ -1,11 +1,11 @@
-
-function Online(callback){
+function Online(callback) {
     let img = new Image();
     img.src = 'https://www.baidu.com/favicon.ico?_t=' + Date.now(); //will change to google
-    img.onload=function(){
+    img.onload = function () {
         if (callback) callback(true)
     };
-    img.onerror=function(){
+    img.onerror = function () {
+
         if (callback) callback(false)
     };
 }
@@ -24,6 +24,7 @@ Online(function(flag){
         document.getElementById("download_pages").classList.add('unavailable');
         document.getElementById("online_homepage").disabled = true;
         document.getElementById("online_homepage").classList.add('unavailable');
+
         internet_status_dom.css(css);
     }
 });
