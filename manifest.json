@@ -6,11 +6,21 @@
   "icons": {
     "400": "assets/img/pb_400x400.png"
   },
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage"
+  ],
   "background": {
     "scripts": [
+      "./dist/PBwork.js",
       "background.js"
     ]
   },
+  "options_ui": {
+    "page": "options/options.html"
+  },
+
   "browser_action": {
     "browser_style": true,
     "default_icon": {

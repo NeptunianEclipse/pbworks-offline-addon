@@ -1,10 +1,14 @@
+
+
 const basePBWorksURL = "pbworks.com";
 const corsProxyURL = "https://cors-anywhere.herokuapp.com/";
-const adminKey = "5VXfJkL9eybJ3xuycKYU";
-const workspaceName = "159356group7";
+// const adminKey = "5VXfJkL9eybJ3xuycKYU";
+// const adminKey = getAdminKey();
+// const workspaceName = "159356group7";
+
 
 interface IDict<V> {
-    [key: string] : V;
+    [key: string]: V;
 }
 
 interface PageInfo {
@@ -27,13 +31,13 @@ class PBWorks {
 
     async operation(name: string, inputs: IDict<any>): Promise<object> {
         let inputsString = `/admin_key/${this.adminKey}`;
-        for(let key of Object.keys(inputs)) {
+        for (let key of Object.keys(inputs)) {
             inputsString += "/" + key;
             inputsString += "/" + inputs[key];
         }
         let requestString = "https://" + this.baseRequestURL + name + inputsString;
 
-        let response = await fetch(corsProxyURL + requestString, { mode: 'cors' });
+        let response = await fetch(corsProxyURL + requestString, {mode: 'cors'});
         let text = await response.text();
 
         let jsonString = text.substring(11, text.length - 3);
@@ -90,17 +94,17 @@ class PBWorks {
     }
 }
 
-let pbworks = new PBWorks(workspaceName, adminKey);
-
-pbworks.getPage({
-    oid: 134815806
-}).then((pageInfo) => {
-    console.log(pageInfo);
-});
-
-pbworks.putPage({
-    page: "This is a new page",
-    html: encodeURIComponent("<H1>This is a page</H1>")
-}).then((success) => {
-    console.log(success);
-});
+// let pbworks = new PBWorks(workspaceName, adminKey);
+//
+// pbworks.getPage({
+//     oid: 134815806
+// }).then((pageInfo) => {
+//     console.log(pageInfo);
+// });
+//
+// pbworks.putPage({
+//     page: "This is a new page",
+//     html: encodeURIComponent("<H1>This is a page</H1>")
+// }).then((success) => {
+//     console.log(success);
+// });
