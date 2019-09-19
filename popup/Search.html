@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Home | PBWorks</title>
+    <title>Search | PBWorks Addon</title>
     <script src="../jquery-3.4.1.min.js"></script>
     <script src="JS/LoadLocalPage.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/Homepage.css" />
@@ -13,7 +13,7 @@
     <header>
         <div id="leftHeader" class="inline">
             <h1 class="inline">Addon</h1>
-            <p id="internetStatus" class="internetDependent"></p>
+            <p id="internetStatus" class="internetDependent">Online</p>
 
         </div>
 
@@ -49,9 +49,14 @@
     <div id="localFrame">
         <p id="localPage">Current Homepage</p>
         <div id="currentHomepage"></div>
-        <input type="button" id="showPage" value="Click me">
+        <button type="button" onclick="displayOne()">Display please</button>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            $("#localPage").load("../assets/testPages/FrontPage.html");
+        });
+    </script>
 </body>
 
 

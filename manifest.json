@@ -17,5 +17,7 @@
       "32": "assets/img/pb_400x400.png"
     },
     "default_popup": "popup/Index.html"
-  }
+  },
+  "permissions": ["activeTab", "contextMenus", "storage" ]
+  
 }
