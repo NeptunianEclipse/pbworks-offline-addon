@@ -37,7 +37,7 @@ function get_admin_key(item) {
 
 }
 
-function prepare_storage() {
+function open_local_storage() {
     return new Promise(function (resolve, reject) {
         const getting = browser.storage.local.get("pbwork_key");
         getting.then(resolve, reject);
@@ -74,7 +74,7 @@ function handleMessage(request, sender, sendResponse) {
         let p = new Promise(function (resolve, reject) {
             resolve();
         });
-        p.then(prepare_storage)
+        p.then(open_local_storage)
             .then(get_admin_key)
             .then(download_page)
             .then(function (pageInfo) {
