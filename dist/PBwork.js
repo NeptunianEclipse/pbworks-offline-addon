@@ -8,6 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const basePBWorksURL = "pbworks.com";
 const corsProxyURL = "https://cors-anywhere.herokuapp.com/";
+// interface PageInfo {
+//     name: string;
+//     oid: number;
+//     html: string;
+// }
 class PBWorks {
     constructor(workspaceName, adminKey) {
         this.workspaceName = workspaceName;
@@ -47,14 +52,11 @@ class PBWorks {
             return json;
         });
     }
+    // @ts-ignore
     getPage(inputs) {
         return __awaiter(this, void 0, void 0, function* () {
             let json = yield this.operation("GetPage", inputs);
-            return {
-                name: json['name'],
-                html: json['html'],
-                oid: json['oid']
-            };
+            return json;
         });
     }
     putPage(inputs) {

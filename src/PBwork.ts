@@ -11,11 +11,11 @@ interface IDict<V> {
     [key: string]: V;
 }
 
-interface PageInfo {
-    name: string;
-    oid: number;
-    html: string;
-}
+// interface PageInfo {
+//     name: string;
+//     oid: number;
+//     html: string;
+// }
 
 class PBWorks {
 
@@ -67,6 +67,7 @@ class PBWorks {
         return json;
     }
 
+    // @ts-ignore
     async getPage(
         inputs: {
             page?: string;
@@ -74,13 +75,9 @@ class PBWorks {
             raw?: boolean;
             verbose?: boolean;
         }
-    ): Promise<PageInfo> {
+    ): Promise<object> {
         let json = await this.operation("GetPage", inputs);
-        return {
-            name: json['name'],
-            html: json['html'],
-            oid: json['oid']
-        }
+        return json;
     }
 
     async putPage(

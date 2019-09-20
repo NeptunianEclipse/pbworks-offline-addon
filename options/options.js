@@ -10,7 +10,6 @@ function saveOptions(e) {
 function restoreOptions() {
     function setCurrentChoice(result) {
         document.querySelector("#key").value = result.pbwork_key || "";
-        console.log(result.pbwork_key);
         document.querySelector("#admin_key").textContent = result.pbwork_key;
     }
 

@@ -5,7 +5,8 @@ function handleError(error) {
 function handleResponse(message) {
     if(message.response === false){
         alert("This page is not a valid PBwork page!");
-    }else {
+    }
+    if (message.response === true){
         alert("This page has been stored in database!");
     }
 }

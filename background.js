@@ -1,11 +1,15 @@
-let admin_key = "-1";
-//
+let admin_key;
+let workspace_name;
+let oid_num;
+
+
+//create a item in right-click menu in firefox
 browser.contextMenus.create({
     id: "PBwork-download",
     title: "Download PBwork article"
 });
 
-//
+//add an listener for item in right-click
 browser.contextMenus.onClicked.addListener(function (info, tab) {
     if (info.menuItemId === "PBwork-download") {
         browser.tabs.executeScript({
@@ -14,23 +18,43 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
     }
 });
 
-function getAdminKey() {
-    // assign admin_key
-    function onError(error) {
-        console.log(`Error: ${error}`);
-    }
+// promise reject callback function
+function onError(error) {
+    console.log(`Error: ${error}`);
+}
 
-    function onGot(item) {
+// get admin key callback function
+function get_admin_key(item) {
+    return new Promise(function (resolve, reject) {
         let key = "";
         if (item.pbwork_key) {
             key = item.pbwork_key;
         }
         admin_key = key;
-        console.log(admin_key);
-    }
+        resolve();
 
-    const getting = browser.storage.local.get("pbwork_key");
-    getting.then(onGot, onError);
+    });
+
+}
+
+function prepare_storage() {
+    return new Promise(function (resolve, reject) {
+        const getting = browser.storage.local.get("pbwork_key");
+        getting.then(resolve, reject);
+    });
+}
+
+function download_page() {
+    return new Promise(function (resolve, reject) {
+        console.log(admin_key);
+        let pbworks = new PBWorks(workspace_name, admin_key);
+        pbworks.getPage({
+            oid: oid_num
+        }).then((pageInfo) => {
+            resolve(pageInfo);
+            console.log("download finish");
+        });
+    })
 }
 
 
@@ -41,28 +65,31 @@ function handleMessage(request, sender, sendResponse) {
     let outcome = pbwork_re.test(url);
     if (outcome) {
         sendResponse({response: true});
-        let oid_num = new RegExp("[0-9]{9}")
+        oid_num = new RegExp("[0-9]{9}")
             .exec(url)[0];
-        let workspace_name = new RegExp("^.*\.pbworks\.com")
+        workspace_name = new RegExp("^.*\.pbworks\.com")
             .exec(url)[0]
             .replace(/^http:\/\//, "")
             .replace(/\.pbworks\.com/, "");
-        getAdminKey();
-        setTimeout(()=>{
-            console.log(admin_key);
-            let pbworks = new PBWorks(workspace_name, admin_key);
-            pbworks.getPage({
-                oid: oid_num
-            }).then((pageInfo) => {
-                console.log(pageInfo.html);
+        let p = new Promise(function (resolve, reject) {
+            resolve();
+        });
+        p.then(prepare_storage)
+            .then(get_admin_key)
+            .then(download_page)
+            .then(function (pageInfo) {
+                // insert page into database
+                insert(pageInfo)
+                    .then(sendResponse({response: true}));
             });
-        }, 1000);
+
     } else {
         sendResponse({response: false});
     }
-
-
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
 
+
+
+// 5VXfJkL9eybJ3xuycKYU
