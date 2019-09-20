@@ -3,8 +3,4 @@ function openPage() {
         url: "index.html"
     });
 }
-
 browser.browserAction.onClicked.addListener(openPage);
-
-
-
