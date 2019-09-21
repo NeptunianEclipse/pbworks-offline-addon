@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <title>Home | PBWorks</title>
     <script src="../jquery-3.4.1.min.js"></script>
+    <script src="../data_base_api.js"></script>
     <script src="JS/LoadLocalPage.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/Homepage.css" />
 
@@ -29,8 +30,8 @@
                 <tr>
                     <td>
                         <form id="firstSearch" class="inline">
-                            <input type="text" name="searchHeader" value="Search locally . . ." class="inline" />
-                            <input type="submit" value="Search" class="inline" />
+                            <input type="text" id="searchHeader" placeholder="Search locally . . ." class="inline" />
+                            <input type="button" id="searchHeaderB" class="inline" value="Search">
                         </form>
                     </td>
                 </tr>
@@ -41,15 +42,14 @@
     </header>
 
     <div id="searchDiv">
-        <input type="text" name="searchPages" value="Where to?" />
-        <input type="submit" value="Search Pages" />
+        <input type="text" id="searchPages" placeholder="Where to?" />
+        <input type="button" id="searchPagesB" class="inline" value="Search">
 
     </div>
 
     <div id="localFrame">
         <p id="localPage">Current Homepage</p>
-        <div id="currentHomepage"></div>
-        <input type="button" id="showPage" value="Click me">
+        <div id="currentPage"></div>
     </div>
 
 </body>

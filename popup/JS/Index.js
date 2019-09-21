@@ -27,7 +27,7 @@ document.addEventListener("click", function (e) {
         console.log(e.target.tagName);
         return;
     }
-    let url_view_modify = "http://www.massey.ac.nz/massey/home.cfm";// not true, need to change
+    let url_view_modify = "Homepage.html";
     if (e.target.textContent === "Download Pages") {
         console.log("click!!!!!")
     } else if (e.target.textContent === "View/Modify Local Pages") {
