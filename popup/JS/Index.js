@@ -5,26 +5,19 @@ function Online(callback) {
         if (callback) callback(true)
     };
     img.onerror = function () {
-
         if (callback) callback(false)
     };
 }
 
-Online(function(flag){
+Online(function (flag) {
     let internet_status_dom = $('#internet_status');
-    if(flag) {  //Online
-        let css = {"font-size":"1.2em", "color":"blue","text-align":"center"};
+    if (flag) {
+        let css = {"font-size": "1.2em", "color": "blue", "text-align": "center"};
         internet_status_dom.text("Online");
-        document.getElementById("online_homepage").disabled = false;
         internet_status_dom.css(css);
-    }else { //Offline
-        let css ={"font-size":"1.2em", "color":"red", "text-align":"center"};
+    } else {
+        let css = {"font-size": "1.2em", "color": "blue", "text-align": "center"};
         internet_status_dom.text("Offline");
-        document.getElementById("download_pages").disabled = true;
-        document.getElementById("download_pages").classList.add('unavailable');
-        document.getElementById("online_homepage").disabled = true;
-        document.getElementById("online_homepage").classList.add('unavailable');
-
         internet_status_dom.css(css);
     }
 });
@@ -34,25 +27,16 @@ document.addEventListener("click", function (e) {
         console.log(e.target.tagName);
         return;
     }
-
-    console.log("click button");
-
-    let url_download = "http://confocal-manawatu.pbworks.com/w/page/16346911/Top"; // maybe change later
-    let url_view_modify = "Homepage.html";
-    let url_online = "http://159356group7.pbworks.com/";
-
-    let chosenPage;
-    if (e.target.textContent === "Download Current Page") {
-        chosenPage = url_download
-    } else if (e.target.textContent === "Online Homepage") {
-        chosenPage = url_online;
-    } else if (e.target.textContent === "Local Homepage") {
-        chosenPage = url_view_modify;
+    let url_view_modify = "http://www.massey.ac.nz/massey/home.cfm";// not true, need to change
+    if (e.target.textContent === "Download Pages") {
+        console.log("click!!!!!")
+    } else if (e.target.textContent === "View/Modify Local Pages") {
+        browser.tabs.create({
+            url: url_view_modify
+        });
     }
 
-    browser.tabs.create({
-        url: chosenPage
-    });
+
 });
 
 
