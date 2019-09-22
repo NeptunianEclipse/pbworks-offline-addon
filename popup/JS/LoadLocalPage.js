@@ -7,7 +7,7 @@ $(document).ready(function () {
         console.log(search);
         $("#localPage").text("Search for '" + search + "' returns: ");
         var result = get_data_name(search);
-        result.then((e) =>{
+        result.then((e) => {
             console.log(e.target.result);
             if (e.target.result.length == 0 || e.target.result.length === undefined) {
                 $("#currentPage").text("No pages found!");
@@ -39,11 +39,31 @@ $(document).ready(function () {
 
 });
 
+function toEditor(editor_url){
+    console.log("click here")
+    browser.tabs.create({
+        url: editor_url
+    });
+}
+
+function makeURL(singlePage){
+    let editor_url = "editor.html?";
+    return editor_url + 'oid' + "="+ singlePage.oid;
+}
+
 //basic display, will be cleaned up later
 function displaySearch(singlePage) {
+    let comment;
+    let editor_url = makeURL(singlePage);
     $("#currentPage").append("<div class='pageDetails'>");
     $("#currentPage").append("<h2>" + singlePage.name + "</h2>");
-    $("#currentPage").append("<p> <i>" + singlePage.comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>");
+    $("#currentPage").append("<input type='button'  value='open editor' onclick=toEditor("+editor_url+")"  + ">" )
+    if (singlePage.comment === undefined) {
+        comment = "There is no comments for this page"
+    } else {
+        comment = singlePage.comment;
+    }
+    $("#currentPage").append("<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>");
     $("#currentPage").append("</div>");
 }
 
