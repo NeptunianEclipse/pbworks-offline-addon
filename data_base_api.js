@@ -1,3 +1,9 @@
+// exports.init_database = init_database;
+// exports.open_storage = open_storage;
+// exports.insert = insert;
+// exports.remove_data = remove_data;
+
+
 /**
  * @Description:
  *
@@ -107,9 +113,10 @@ function insert(data) {
         init_database()
             .then(open_storage)
             .then(object_storage => {
-                object_storage.add(data);
+                let request = object_storage.add(data);
                 console.log("insert");
-                resolve();
+                request.onsuccess = resolve;
+                request.onerror = reject;
             });
     })
 }
@@ -130,9 +137,10 @@ function get_data_oid(oid) {
             .then(open_storage)
             .then(object_storage => {
                 let request = object_storage.get(oid);
-                request.onsuccess = e => {
+                request.onsuccess = (e) => {
                     resolve([e.target.result]);
-                }
+                };
+                request.onerror = reject;
             });
     })
 }
@@ -178,7 +186,26 @@ function get_data_author(author) {
     })
 }
 
+/**
+ * remove data according oid
+ * once finish, a array which contain data will be passed to resolve function
+ * @param oid
+ * @returns {Promise<unknown>}
+ */
 
-get_data_author("PBworks").then(function (event) {
-    console.log(event.target.result);
-});
+function remove_data(oid) {
+    return new Promise((resolve, reject) => {
+        init_database()
+            .then(open_storage)
+            .then((storage) => {
+                let request = storage.delete(oid);
+                request.onsuccess = resolve;
+                request.onerror = reject;
+            })
+    });
+}
+
+
+// get_data_author("PBworks").then(function (event) {
+//     console.log(event.target.result);
+// });
