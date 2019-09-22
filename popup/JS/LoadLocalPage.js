@@ -1,11 +1,7 @@
 $(document).ready(function () {
-    //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
-    $.getJSON('../assets/testPages/sample.json', function (localPage) {
-        console.log(localPage);
-        $("#currentPage").html(localPage.html);
-            }
+    noHomepage();
                 
-    )
+    
 
     //Header searchbar
     $("#searchHeaderB").click(function (event) {
@@ -30,4 +26,14 @@ $(document).ready(function () {
 function displaySearch(list) {
 
 
+}
+
+function noHomepage() {
+    $("#currentPage").html("<h2>You haven't set a home page yet!</h2>");
+}
+
+function setHomepage(pageObject) {
+    //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
+    console.log(pageObject);
+    $("#currentPage").html(pageObject.html);
 }
