@@ -78,3 +78,20 @@ p {
     background-color: white;
 
 }
+
+.pageDetails {
+    width: 95%;
+    border-bottom: solid;
+    border-bottom-color: black;
+    background-color: #e8f5ff;
+    padding-left:20px;
+}
+
+    .pageDetails h2 {
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 14px;
+    }
+    .pageDetails p {
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 14px;
+    }
