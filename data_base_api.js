@@ -137,9 +137,7 @@ function get_data_oid(oid) {
             .then(open_storage)
             .then(object_storage => {
                 let request = object_storage.get(oid);
-                request.onsuccess = (e) => {
-                    resolve([e.target.result]);
-                };
+                request.onsuccess = resolve;
                 request.onerror = reject;
             });
     })

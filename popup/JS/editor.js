@@ -1,32 +1,40 @@
-/**
- *  This is a callback funtion for 
- *  modify title button
- * @return {string}
- */
-function ReadPBWorkJson(file_path, editor) {
-    $.getJSON(file_path, function (result) {
-        editor.html(result['html']);
-        $("#article_title").text(result["name"])
-    }
-    );
+
+function GetQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);//search,find parameter behind '?' 
+    if (r != null)
+        return unescape(r[2]);
+    return null;
 }
 
 
 /**
  *  init the editor
  */
+
+let page;
+let oid = GetQueryString('oid');
+oid = parseInt(oid); // note that data type of key primary
+get_data_oid(oid)
+    .then(event => {
+        $('#article_title').text(event.target.result.name)
+        editor.html(event.target.result.html);
+        page = event.target.result;
+    });
+
+
 KindEditor.ready(function (K) {
     window.editor = K.create('#editor_id', {
         themeType: 'editor'
     });
-    ReadPBWorkJson("sample.json", window.editor);
 });
 
 
 $('#button_save').click(function () {
     editor.sync();
     let new_context = $('#editor_id').val();
-    alert("you click save!")
+    alert("you click save!");
+    console.log(new_context);
     // local data base API here to save change in local
 });
 
@@ -49,4 +57,5 @@ $('#button_modify_title').click(function () {
         article_title_selector.text(new_title);
     }
 })
+
 

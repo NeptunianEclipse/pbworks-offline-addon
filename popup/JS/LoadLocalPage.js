@@ -39,16 +39,16 @@ $(document).ready(function () {
 
 });
 
-function toEditor(editor_url){
+function toEditor(editor_url) {
     console.log("click here")
     browser.tabs.create({
         url: editor_url
     });
 }
 
-function makeURL(singlePage){
+function makeURL(singlePage) {
     let editor_url = "editor.html?";
-    return editor_url + 'oid' + "="+ singlePage.oid;
+    return editor_url + 'oid' + "=" + singlePage.oid;
 }
 
 //basic display, will be cleaned up later
@@ -56,7 +56,7 @@ function displaySearch(singlePage) {
     let comment;
     let editor_url = makeURL(singlePage);
     $("#currentPage").append("<div class='pageDetails'>");
-    $("#currentPage").append("<h2>" + "<a href="+editor_url+">"+singlePage.name +"</a>"+ "</h2>");
+    $("#currentPage").append("<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a>" + "</h2>");
     // $("#currentPage").append("<input type='button'  value='open editor' onclick=toEditor("+editor_url+")"  + ">" );
     if (singlePage.comment === undefined) {
         comment = "There is no comments for this page"

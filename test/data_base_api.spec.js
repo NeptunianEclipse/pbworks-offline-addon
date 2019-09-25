@@ -48,7 +48,7 @@ describe('database api test', function () {
         it("get data test", function (done) {
             get_data_oid(101)
                 .then(e => {
-                    assert.equal(e[0].oid, 101, "oid can not consist with return oid!");
+                    assert.equal(e.target.result.oid, 101, "oid can not consist with return oid!");
                     done();
                 })
                 .catch(e => {
