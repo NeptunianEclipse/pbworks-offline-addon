@@ -56,8 +56,8 @@ function displaySearch(singlePage) {
     let comment;
     let editor_url = makeURL(singlePage);
     $("#currentPage").append("<div class='pageDetails'>");
-    $("#currentPage").append("<h2>" + singlePage.name + "</h2>");
-    $("#currentPage").append("<input type='button'  value='open editor' onclick=toEditor("+editor_url+")"  + ">" )
+    $("#currentPage").append("<h2>" + "<a href="+editor_url+">"+singlePage.name +"</a>"+ "</h2>");
+    // $("#currentPage").append("<input type='button'  value='open editor' onclick=toEditor("+editor_url+")"  + ">" );
     if (singlePage.comment === undefined) {
         comment = "There is no comments for this page"
     } else {
@@ -75,5 +75,4 @@ function setHomepage(pageObject) {
     //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
     console.log(pageObject);
     $("#currentPage").html(pageObject.html);
-
 }
