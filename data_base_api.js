@@ -204,6 +204,26 @@ function remove_data(oid) {
 }
 
 
+/**
+ * upload data 
+ * @param {PBwork page object} data 
+ * @returns {Promise<unknown>}
+ * 
+ * resolve function will receive a object called event
+ *  event.target.result is oid number of the object
+ */
+function upload_data(data){
+    return new Promise((resolve, reject) => {
+        init_database()
+        .then(open_storage)
+        .then(storage => {
+            let request = storage.put(data);
+            request.onsuccess = resolve;
+            request.onerror = reject;
+        });
+    });
+}
+
 // get_data_author("PBworks").then(function (event) {
 //     console.log(event.target.result);
 // });

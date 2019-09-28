@@ -32,7 +32,6 @@ function get_admin_key(item) {
         }
         admin_key = key;
         resolve();
-
     });
 
 }
@@ -57,35 +56,71 @@ function download_page() {
     })
 }
 
+function upload_page(data){
+    return new Promise((resolve, reject) => {
+        console.log("begin uploading..........")
+        let pbworks = new PBWorks(workspace_name, admin_key);
+        pbworks.putPage({
+            page: data.name,
+            html: data.html
+        }).then(success => {
+            console.log(success)
+            resolve(success);
+            console.log("upload finfish......");
+        }).catch(error =>{
+            
+            console.log(error);
+            reject(error);
+            console.log("upload fail")
+        })
+    })
+
+}
 
 //
 function handleMessage(request, sender, sendResponse) {
-    let url = request.current_url;
-    let pbwork_re = new RegExp("^.+\.pbworks.com/w/page/[0-9]{9}/.*");
-    let outcome = pbwork_re.test(url);
-    if (outcome) {
-        sendResponse({response: true});
-        oid_num = new RegExp("[0-9]{9}")
-            .exec(url)[0];
-        workspace_name = new RegExp("^.*\.pbworks\.com")
-            .exec(url)[0]
-            .replace(/^http:\/\//, "")
-            .replace(/\.pbworks\.com/, "");
-        let p = new Promise(function (resolve, reject) {
-            resolve();
-        });
-        p.then(open_local_storage)
-            .then(get_admin_key)
-            .then(download_page)
-            .then(function (pageInfo) {
-                // insert page into database
-                insert(pageInfo)
-                    .then(sendResponse({response: true}));
+    console.log(request)
+    if (request.current_url){
+        console.log("url"+request.current_url);
+        let url = request.current_url;
+        let pbwork_re = new RegExp("^.+\.pbworks.com/w/page/[0-9]{9}/.*");
+        let outcome = pbwork_re.test(url);
+        if (outcome) {
+            sendResponse({response: true});
+            oid_num = new RegExp("[0-9]{9}")
+                .exec(url)[0];
+            workspace_name = new RegExp("^.*\.pbworks\.com")
+                .exec(url)[0]
+                .replace(/^http:\/\//, "")
+                .replace(/\.pbworks\.com/, "");
+            let p = new Promise(function (resolve, reject) {
+                resolve();
             });
-
-    } else {
-        sendResponse({response: false});
+            p.then(open_local_storage)
+                .then(get_admin_key)
+                .then(download_page)
+                .then(function (pageInfo) {
+                    // insert page into database
+                    insert(pageInfo)
+                        .then(sendResponse({response: true}));
+                });
+    
+        } else {
+            sendResponse({response: false});
+        }
     }
+    if(request.data){
+        console.log(request.data);
+        let page = request.data
+        upload_page(page)
+        .then(success =>{
+            console.log(success);
+            sendResponse({response: true});
+        }).catch(error =>{
+            sendResponse({response: false});
+        })
+    }
+   
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
