@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
-    "typescript": "^3.5.3",
+    "rollup": "^1.21.0",
+    "typescript": "^3.6.2",
     "web-ext-types": "^3.2.1"
   },
   "devDependencies": {
