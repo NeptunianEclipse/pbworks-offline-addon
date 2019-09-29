@@ -104,7 +104,11 @@ function open_storage(db_instance) {
  *  to insert a data to storage
  *  and user should write a function as resolve function
  *  which will be called after insert finish successfully.
+ *  and resolve function receive a event object.
  *
+ * now insert function can upgrade data
+ * if data exists, insert function will upgrade data
+ * if data doesn't exist, insert function will insert data.
  * @param data
  * @returns {Promise<unknown>}
  */
@@ -113,10 +117,18 @@ function insert(data) {
         init_database()
             .then(open_storage)
             .then(object_storage => {
-                let request = object_storage.add(data);
-                console.log("insert");
-                request.onsuccess = resolve;
-                request.onerror = reject;
+                let oid = data.oid;
+                let request = object_storage.get(oid);
+                request.onsuccess = function () {
+                    let upload_request = object_storage.put(data);
+                    upload_request.onsuccess = resolve;
+                    upload_request.onerror = resolve;
+                };
+                request.onerror = function () {
+                    let insert_request = object_storage.add(data);
+                    insert_request.onsuccess = resolve;
+                    insert_request.onerror = reject;
+                }
             });
     })
 }
@@ -127,6 +139,9 @@ function insert(data) {
  * once finish, a array which contain data will be passed to resolve function
  * in this case, array will only contain one data object,
  * because oid is primary key
+ *
+ * if success, resolve function will receive event object
+ * and data is located in event.target.result
  *
  * @param oid
  * @returns {Promise<unknown>}
@@ -203,6 +218,27 @@ function remove_data(oid) {
     });
 }
 
+
+/**
+ * upload data 
+ * @param {PBwork page object} data 
+ * @returns {Promise<unknown>}
+ * 
+ * resolve function will receive a object called event
+ *  event.target.result is oid number of the object
+ */
+function upgrade_data(data){
+    return new Promise((resolve, reject) => {
+        init_database()
+        .then(open_storage)
+        .then(storage => {
+            let request = storage.put(data);
+            console.log("begin uploading data");
+            request.onsuccess = resolve;
+            request.onerror = reject;
+        });
+    });
+}
 
 // get_data_author("PBworks").then(function (event) {
 //     console.log(event.target.result);

@@ -10,6 +10,7 @@ $(document).ready(function () {
         console.log(search);
         searchFor(search);
 
+
     });
 
     //Lower searchbar
@@ -18,6 +19,64 @@ $(document).ready(function () {
         searchFor(search);
 
     });
+
+
+    $("#searchOid").click(function (event) {
+        $("#searchByWhat").click(function (event) {
+            var search = document.getElementById("searchBy").value;
+            search = parseInt(search);
+            $("#localPage").text("Search oid for '" + search + "' returns: ");
+            var result = get_data_oid(search);
+            result.then((e) => {
+                console.log(e.target.result);
+                if (e.target.result === undefined) {
+                    $("#currentPage").text("No pages found!");
+                } else {
+                    $("#currentPage").empty();
+                    displaySearch(e.target.result);
+                    }
+            })
+        })
+        });
+    $("#searchName").click(function (event) {
+        $("#searchByWhat").click(function (event) {
+            var search = document.getElementById("searchBy").value;
+            $("#localPage").text("Search name for '" + search + "' returns: ");
+            var result =  get_data_name(search);
+            result.then((e) => {
+                console.log(e.target.result);
+                if (e.target.result.length === 0 || e.target.result.length === undefined) {
+                    $("#currentPage").text("No pages found!");
+                } else {
+                    $("#currentPage").empty();
+                    for (i = 0; i < e.target.result.length; i++) {
+                        var p = e.target.result[i];
+                        displaySearch(p);
+                    }
+                }
+            })
+        })
+        });
+    $("#searchAuthor").click(function (event) {
+        $("#searchByWhat").click(function (event) {
+            var search = document.getElementById("searchBy").value;
+            $("#localPage").text("Search author for '" + search + "' returns: ");
+            var result = get_data_author(search);
+            result.then((e) => {
+                console.log(e.target.result);
+                if (e.target.result.length === 0 || e.target.result.length === undefined) {
+                    $("#currentPage").text("No pages found!");
+                } else {
+                    $("#currentPage").empty();
+                    for (i = 0; i < e.target.result.length; i++) {
+                        var p = e.target.result[i];
+                        console.log(p);
+                        displaySearch(p);
+                    }
+                }
+            })
+        })
+    })
 
 });
 
@@ -60,7 +119,7 @@ function searchFor(search) { //search comes from button listeners above
 }
 
 function toEditor(editor_url) {
-    console.log("click here")
+    console.log("click here");
     browser.tabs.create({
         url: editor_url
     });
@@ -70,6 +129,7 @@ function makeURL(singlePage) {
     let editor_url = "editor.html?";
     return editor_url + 'oid' + "=" + singlePage.oid;
 }
+
 
 //basic display of all search items, will be cleaned up later
 function displaySearch(singlePage, pageArrayNumber) {
@@ -82,7 +142,8 @@ function displaySearch(singlePage, pageArrayNumber) {
     }
 
     var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a>" + "</h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
-    $("#currentPage").append("<div class='pageDetails'>" + stringEntry + "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>" + "</div>");
+    var stringEntry1= "<p>OID: " + singlePage.oid +"</p>"
+    $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>" + "</div>");
 }
 
 function noHomepage() {

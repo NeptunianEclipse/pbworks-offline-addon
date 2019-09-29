@@ -1,10 +1,8 @@
-function openPage() {
-    browser.tabs.create({
-        url: "index.html"
-    });
-}
+import PBWorks from './pbworks.js';
 
-browser.browserAction.onClicked.addListener(openPage);
+const adminKey = "5VXfJkL9eybJ3xuycKYU";
+const workspaceName = "159356group7";
 
+let pbworks = new PBWorks(workspaceName, adminKey);
 
-
+// TODO: Implement everything
