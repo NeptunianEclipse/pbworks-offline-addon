@@ -1,3 +1,6 @@
+var searchResult;
+//this global variable simplifies the process of accessing pages in the search result, i.e. no weird handing around of strings
+
 $(document).ready(function () {
     noHomepage();
 
@@ -5,39 +8,56 @@ $(document).ready(function () {
     $("#searchHeaderB").click(function (event) {
         var search = document.getElementById("searchHeader").value;
         console.log(search);
-        $("#localPage").text("Search for '" + search + "' returns: ");
-        var result = get_data_name(search);
-        result.then((e) => {
-            console.log(e.target.result);
-            if (e.target.result.length == 0 || e.target.result.length === undefined) {
-                $("#currentPage").text("No pages found!");
-            }
-            else {
-                $("#currentPage").empty();
-                for (i = 0; i < e.target.result.length; i++) {
-                    var p = e.target.result[i]
-                    displaySearch(p);
-                }
-            }
-        })
+        searchFor(search);
 
     });
 
     //Lower searchbar
     $("#searchPagesB").click(function (event) {
         var search = document.getElementById("searchPages").value;
-        $("#localPage").text("Search for '" + search + "' returns: ");
-        var result = get_data_name(search);
-        result.then((e) => {
-            console.log(e.target.result);
-            var t = e.target.result[0];
-            $("#currentPage").text(t);
-            displaySearch(t)
-        })
+        searchFor(search);
 
     });
 
 });
+
+
+function searchFor(search) { //search comes from button listeners above
+    $("#localPage").text("Search for '" + search + "' returns: ");
+    var result = get_data_name(search);
+    result.then((e) => {
+        console.log(e.target.result);
+        searchResult = [];
+        searchResult = e.target.result;
+        if (e.target.result.length == 0 || e.target.result.length === undefined) {
+            $("#currentPage").text("No pages found!");
+        }
+        else {
+            $("#currentPage").empty();
+            for (i = 0; i < e.target.result.length; i++) {
+                var p = e.target.result[i]
+                displaySearch(p, i);
+            }
+        }
+        var viewButtons = document.querySelectorAll("div.pageDetails > .viewButton");
+
+
+        console.log(viewButtons);
+        for (var j = 0; j < viewButtons.length; j++) {
+            viewButtons[j].addEventListener('click', function (event) {
+                var viewButtonName = event.target.name.slice(5);
+                var vbnInt = parseInt(viewButtonName);
+                var actualPage = searchResult[vbnInt].html;
+                $("#currentPage").empty();
+                console.log(viewButtonName);
+                $("#localPage").text(searchResult[vbnInt].name);
+                $("#currentPage").html(actualPage);
+
+            })
+        }
+
+    });
+}
 
 function toEditor(editor_url) {
     console.log("click here")
@@ -51,20 +71,18 @@ function makeURL(singlePage) {
     return editor_url + 'oid' + "=" + singlePage.oid;
 }
 
-//basic display, will be cleaned up later
-function displaySearch(singlePage) {
+//basic display of all search items, will be cleaned up later
+function displaySearch(singlePage, pageArrayNumber) {
     let comment;
     let editor_url = makeURL(singlePage);
-    $("#currentPage").append("<div class='pageDetails'>");
-    $("#currentPage").append("<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a>" + "</h2>");
-    // $("#currentPage").append("<input type='button'  value='open editor' onclick=toEditor("+editor_url+")"  + ">" );
     if (singlePage.comment === undefined) {
         comment = "There is no comments for this page"
     } else {
         comment = singlePage.comment;
     }
-    $("#currentPage").append("<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>");
-    $("#currentPage").append("</div>");
+
+    var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a>" + "</h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
+    $("#currentPage").append("<div class='pageDetails'>" + stringEntry + "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>" + "</div>");
 }
 
 function noHomepage() {

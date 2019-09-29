@@ -17,11 +17,11 @@ header {
 h1 {
     float: left;
     padding-left: 25px;
-    font-family: "Lucida Console", Monaco, monospace;
+    font-family: Verdana;
 }
 
 p {
-    font-family: "Lucida Console", Monaco, monospace;
+    font-family: Verdana;
 }
 #leftHeader {
     float: left;
@@ -35,7 +35,7 @@ p {
     float: left;
     padding-top: 18px;
     padding-left: 20px;
-    font-family: "Lucida Console", Monaco, monospace;
+    font-family: Verdana;
 }
 
 #rightHeader {
@@ -50,7 +50,7 @@ p {
 }
 
 #currentPBWiki {
-    font-family: "Lucida Console", Monaco, monospace;
+    font-family: Verdana;
 }
 
 .inline {
@@ -83,15 +83,17 @@ p {
     width: 95%;
     border-bottom: solid;
     border-bottom-color: black;
-    background-color: #e8f5ff;
-    padding-left:20px;
+    background-color: #e9eef2;
+    margin-left:20px;
+    margin-top: 10px;
+    padding: 10px;
 }
 
     .pageDetails h2 {
-        font-family: "Lucida Console", Monaco, monospace;
+        font-family: Verdana;
         font-size: 14px;
     }
     .pageDetails p {
-        font-family: "Lucida Console", Monaco, monospace;
+        font-family: Verdana;
         font-size: 14px;
     }
