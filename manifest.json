@@ -13,7 +13,7 @@
   ],
   "background": {
     "scripts": [
-      "./dist/PBwork.js",
+      "./dist/pbworks.js",
       "data_base_api.js",
       "background.js"
     ]

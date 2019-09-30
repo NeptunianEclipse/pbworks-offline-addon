@@ -9,7 +9,7 @@ $(document).ready(function () {
         var result = get_data_name(search);
         result.then((e) => {
             console.log(e.target.result);
-            if (e.target.result.length == 0 || e.target.result.length === undefined) {
+            if (e.target.result.length === 0 || e.target.result.length === undefined) {
                 $("#currentPage").text("No pages found!");
             }
             else {
@@ -40,7 +40,7 @@ $(document).ready(function () {
 });
 
 function toEditor(editor_url) {
-    console.log("click here")
+    console.log("click here");
     browser.tabs.create({
         url: editor_url
     });

@@ -3,7 +3,11 @@
         "outDir": "./dist",
         "allowJs": true,
         "target": "es6",
-        "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
+        "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"],
+        "lib": [
+          "es2017",
+          "dom"
+        ]
     },
     "include": [
         "./src/**/*"

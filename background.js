@@ -1,6 +1,7 @@
 let admin_key;
 let workspace_name;
 let oid_num;
+let pbwork_object;
 
 
 //create a item in right-click menu in firefox
@@ -47,41 +48,48 @@ function download_page() {
     return new Promise(function (resolve, reject) {
         console.log(admin_key);
         let pbworks = new PBWorks(workspace_name, admin_key);
-        pbworks.getPage({
-            oid: oid_num
-        }).then((pageInfo) => {
+        pbworks.getPageContent(oid_num).then((pageInfo) => {
             resolve(pageInfo);
             console.log("download finish");
         });
     })
 }
 
-function upload_page(data){
+function upload_page(data) {
     return new Promise((resolve, reject) => {
-        console.log("begin uploading..........")
-        let pbworks = new PBWorks(workspace_name, admin_key);
-        pbworks.putPage({
-            page: data.name,
-            html: data.html
-        }).then(success => {
-            console.log(success)
-            resolve(success);
-            console.log("upload finfish......");
-        }).catch(error =>{
-            
-            console.log(error);
-            reject(error);
-            console.log("upload fail")
-        })
-    })
+        console.log("begin uploading..........");
+        let url = data.revurl;
+        workspace_name = new RegExp("^.*\.pbworks\.com")
+            .exec(url)[0]
+            .replace(/^http:\/\//, "")
+            .replace(/\.pbworks\.com/, "");
+
+        open_local_storage()
+            .then(get_admin_key)
+            .then(() => {
+                let pbworks = new PBWorks(workspace_name, admin_key);
+                console.log("int upload data funtion");
+                console.log(data);
+                console.log(data.html);
+                pbworks.putPageContent(data.name, encodeURIComponent(data.html))
+                    .then(success => {
+                        resolve(success);
+                        console.log("upload finfish......");
+                    }).catch(error => {
+                    console.log(error);
+                    reject(error);
+                    console.log("upload fail")
+                })
+            })
+    });
 
 }
 
 //
 function handleMessage(request, sender, sendResponse) {
-    console.log(request)
-    if (request.current_url){
-        console.log("url"+request.current_url);
+    console.log(request);
+    if (request.current_url) {
+        console.log("url" + request.current_url);
         let url = request.current_url;
         let pbwork_re = new RegExp("^.+\.pbworks.com/w/page/[0-9]{9}/.*");
         let outcome = pbwork_re.test(url);
@@ -104,27 +112,26 @@ function handleMessage(request, sender, sendResponse) {
                     insert(pageInfo)
                         .then(sendResponse({response: true}));
                 });
-    
         } else {
             sendResponse({response: false});
         }
     }
-    if(request.data){
+    if (request.data) {
+        console.log("request.data is true");
         console.log(request.data);
-        let page = request.data
+        let page = request.data;
         upload_page(page)
-        .then(success =>{
-            console.log(success);
-            sendResponse({response: true});
-        }).catch(error =>{
-            sendResponse({response: false});
+            .then(success => {
+                if(success)
+                    sendResponse({response: true});
+                else
+                    sendResponse({response: false});
         })
     }
-   
+
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
 
 
-
-// 5VXfJkL9eybJ3xuycKYU
+//

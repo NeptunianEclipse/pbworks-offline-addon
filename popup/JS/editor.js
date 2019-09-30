@@ -14,6 +14,9 @@ function handleResponse(message){
 }
 
 // receive and parse url parameters.
+/**
+ * @return {string}
+ */
 function GetQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);//search,find parameter behind '?' 
@@ -25,10 +28,12 @@ function GetQueryString(name) {
 // save locally function
 
 function saveLocal(object){
-    upload_data(object)
+    upgrade_data(object)
     .then(event => {
+        console.log("finish upgrading data");
         alert("Page: "+object.name+" has been save in local!");
     }).catch(event =>{
+        console.log("fail upgrading data");
         alert("fail")
     })
 }
@@ -80,6 +85,8 @@ $('#button_update').click(function () {
     editor.sync();
     let new_context = $('#editor_id').val();
     page.html = new_context;
+    console.log("click upload");
+    console.log(page);
     saveLocal(page);
     sendUploadObjectToBackground(page);
 });
@@ -95,5 +102,5 @@ $('#button_modify_title').click(function () {
         article_title_selector.text(new_title);
     }
 })
-
+;
 
