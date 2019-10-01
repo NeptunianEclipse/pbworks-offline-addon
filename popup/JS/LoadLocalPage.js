@@ -51,7 +51,9 @@ $(document).ready(function () {
                     $("#currentPage").empty();
                     for (i = 0; i < e.target.result.length; i++) {
                         var p = e.target.result[i];
-                        displaySearch(p);
+                        if (p.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || search.toLowerCase().indexOf(p.name.toLowerCase()) !== -1) {
+                            displaySearch(p);
+                        }
                     }
                 }
             })
@@ -70,7 +72,6 @@ $(document).ready(function () {
                     $("#currentPage").empty();
                     for (i = 0; i < e.target.result.length; i++) {
                         var p = e.target.result[i];
-                        console.log(p);
                         displaySearch(p);
                     }
                 }
