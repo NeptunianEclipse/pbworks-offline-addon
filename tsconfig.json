@@ -6,6 +6,6 @@
         "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
     },
     "include": [
-        "./src/**/*"
+        "F:\\songSSD20190825\\GitHub\\pbworks-offline-addon\\src\\PBwork.ts"
     ]
 }
