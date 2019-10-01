@@ -170,7 +170,7 @@ function get_data_name(name) {
         init_database()
             .then(open_storage)
             .then(object_storage => {
-                let keyRange = IDBKeyRange.only(name);
+                let keyRange = IDBKeyRange.lowerBound("");
                 console.log("begin get all " + name);
                 let getAllKeysRequest = object_storage.index(INDEX_STORAGE_NAME).getAll(keyRange);
                 getAllKeysRequest.onsuccess = resolve;
