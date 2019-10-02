@@ -6,61 +6,76 @@ $(document).ready(function () {
 
 
     $("#searchOid").click(function (event) {
-        $("#searchByWhat").click(function (event) {
-            var search = document.getElementById("searchBy").value;
-            search = parseInt(search);
-            $("#localPage").text("Search oid for '" + search + "' returns: ");
-            var result = get_data_oid(search);
-            result.then((e) => {
-                console.log(e.target.result);
-                searchResult = [e.target.result];
-                createSearchResults();
-            });
-        })
+        let button = $("#searchByWhat");
+        button.off("click", searchByAuthor);
+        button.off("click", searchByName);
+        button.on("click", searchByOid);
     });
 
 
     $("#searchName").click(function (event) {
-        $("#searchByWhat").click(function (event) {
-            var search = document.getElementById("searchBy").value;
-            $("#localPage").text("Search name for '" + search + "' returns: ");
-            var result = get_data_name(search);
-            result.then((e) => {
-                console.log(e.target.result);
-                searchResult = [];
-                searchResult = e.target.result;
-                if (searchResult.length === 0 || searchResult.length === undefined) {
-                    $("#currentPage").text("No pages found!");
-                }
-                else {
-                    $("#currentPage").empty();
-                    for (i = 0; i < searchResult.length; i++) {
-                        var p = searchResult[i];
-                        if (p.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || search.toLowerCase().indexOf(p.name.toLowerCase()) !== -1) {
-                            displaySearch(p, i);
-
-                        }
-                        createButtonListeners();
-                    }
-                }
-            });
-        })
+        let button = $("#searchByWhat");
+        button.off("click", searchByAuthor);
+        button.off("click", searchByOid);
+        button.on("click", searchByName);
     });
 
 
     $("#searchAuthor").click(function (event) {
-        $("#searchByWhat").click(function (event) {
-            var search = document.getElementById("searchBy").value;
-            $("#localPage").text("Search author for '" + search + "' returns: ");
-            var result = get_data_author(search);
-            result.then((e) => {
-                console.log(e.target.result);
-                searchResult = [];
-                searchResult = e.target.result;
-                createSearchResults();
-            });
-        })
+        let button = $("#searchByWhat");
+        button.off("click", searchByOid);
+        button.off("click", searchByName);
+        button.on("click", searchByAuthor);
     });
+
+    function searchByOid(event) {
+        var search = document.getElementById("searchBy").value;
+        search = parseInt(search);
+        $("#localPage").text("Search oid for '" + search + "' returns: ");
+        var result = get_data_oid(search);
+        result.then((e) => {
+            console.log(e.target.result);
+            searchResult = [e.target.result];
+            createSearchResults();
+        });
+    }
+
+    function searchByName(event) {
+        var search = document.getElementById("searchBy").value;
+        $("#localPage").text("Search name for '" + search + "' returns: ");
+        var result = get_data_name(search);
+        result.then((e) => {
+            console.log(e.target.result);
+            searchResult = [];
+            searchResult = e.target.result;
+            if (searchResult.length === 0 || searchResult.length === undefined) {
+                $("#currentPage").text("No pages found!");
+            }
+            else {
+                $("#currentPage").empty();
+                for (i = 0; i < searchResult.length; i++) {
+                    var p = searchResult[i];
+                    if (p.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || search.toLowerCase().indexOf(p.name.toLowerCase()) !== -1) {
+                        displaySearch(p, i);
+
+                    }
+                    createButtonListeners();
+                }
+            }
+        });
+    }
+
+    function searchByAuthor(event) {
+        var search = document.getElementById("searchBy").value;
+        $("#localPage").text("Search author for '" + search + "' returns: ");
+        var result = get_data_author(search);
+        result.then((e) => {
+            console.log(e.target.result);
+            searchResult = [];
+            searchResult = e.target.result;
+            createSearchResults();
+        });
+    }
 
 
 
@@ -80,13 +95,13 @@ $(document).ready(function () {
         $('.backB').remove();
         var search = document.getElementById("searchBy").value;
         $("#localPage").text("Search for '" + search + "' returns: ");
-        if (searchResult == 0 || searchResult === undefined) {
+        if (searchResult === 0 || searchResult === undefined) {
                 $("#currentPage").text("No pages found!");
         }
         else {
                 $("#currentPage").empty();
                 for (i = 0; i < searchResult.length; i++) {
-                    var p = searchResult[i]
+                    var p = searchResult[i];
                     displaySearch(p, i);
 
                 }
@@ -110,17 +125,17 @@ $(document).ready(function () {
                 var viewButtonName = event.target.name.slice(5);
                 var vbnInt = parseInt(viewButtonName);
                 var actualPage = searchResult[vbnInt].html;
-                console.log(searchResult[vbnInt])
+                console.log(searchResult[vbnInt]);
                 var editor_url = makeURL(searchResult[vbnInt]);
-
-                $("#currentPage").empty();
+                var c_page = $("#currentPage");
+                c_page.empty();
                 console.log(viewButtonName);
                 $("#localPage").text(searchResult[vbnInt].name);
-                $("#currentPage").html(actualPage);
+                c_page.html(actualPage);
 
                 //can't figure out why multiple buttons are made, so this checks if any back buttons exist before adding them
                 var allBackB = document.getElementsByClassName("backB");
-                if (allBackB.length == 0) {
+                if (allBackB.length === 0) {
                     $('<button class="backB">Back</button><a href=' + editor_url + ' class="editLink">Edit</a>').insertBefore("#currentPage");
 
                     for (var p = 0; p < allBackB.length; p++) {
@@ -174,7 +189,7 @@ $(document).ready(function () {
         
         var result = get_data_name("FrontPage");
         result.then((e) => {
-            if (e.target.result.length == 0 || e.target.result.length === undefined) {
+            if (e.target.result.length === 0 || e.target.result.length === undefined) {
                 noHomepage();
             }
             else {
