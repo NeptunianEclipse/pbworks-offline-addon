@@ -89,7 +89,7 @@ $(document).ready(function () {
         var viewButtons = document.querySelectorAll("div.pageDetails > .viewButton");
         //var editButtons = document.querySelectorAll("div.pageDetails > .editButton");
 
-        console.log(viewButtons);
+        // console.log(viewButtons);
         for (var j = 0; j < viewButtons.length; j++) {
             viewButtons[j].addEventListener('click', function (event) {
                 var viewButtonName = event.target.name.slice(5);

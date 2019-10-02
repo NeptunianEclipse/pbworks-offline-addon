@@ -1,8 +1,3 @@
-// exports.init_database = init_database;
-// exports.open_storage = open_storage;
-// exports.insert = insert;
-// exports.remove_data = remove_data;
-
 
 /**
  * @Description:
@@ -220,7 +215,7 @@ function remove_data(oid) {
 
 
 /**
- * upload data 
+ * upgrade data
  * @param {PBwork page object} data 
  * @returns {Promise<unknown>}
  * 
@@ -233,7 +228,7 @@ function upgrade_data(data){
         .then(open_storage)
         .then(storage => {
             let request = storage.put(data);
-            console.log("begin uploading data");
+            console.log("begin upgrading data");
             request.onsuccess = resolve;
             request.onerror = reject;
         });

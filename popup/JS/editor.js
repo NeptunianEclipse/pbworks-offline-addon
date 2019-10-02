@@ -25,7 +25,7 @@ function GetQueryString(name) {
 // save locally function
 
 function saveLocal(object){
-    upload_data(object)
+    upgrade_data(object)
     .then(event => {
         alert("Page: "+object.name+" has been save in local!");
     }).catch(event =>{
@@ -35,11 +35,34 @@ function saveLocal(object){
 
 
 function sendUploadObjectToBackground(object){
-    let sending = browser.runtime.sendMessage({
-        data: page
-    });
-    sending.then(handleResponse, handleError);
+    // get tab id
+    let gettingCurrent = browser.tabs.getCurrent();
+    gettingCurrent.then((tabInfo) => {
+        let sending = browser.runtime.sendMessage({
+            data: page,
+            tab_id: tabInfo.id
+        });
+        sending.then(null, handleError);
+    }, handleError);
+
 }
+
+/**
+ * add a listener which receive messages from background.js
+ */
+
+browser.runtime.onMessage.addListener(request => {
+    console.log("Message from the background script:");
+    console.log(request);
+    if (request.response === true) {
+        alert("Upload successfully")
+    }
+    if (request.response === false) {
+        alert("Upload fail because some reason")
+    }
+    return Promise.resolve({response: "editor.js get it"});
+});
+
 
 /**
  *  init the editor
@@ -94,6 +117,6 @@ $('#button_modify_title').click(function () {
     if (new_title) {
         article_title_selector.text(new_title);
     }
-})
+});
 
 
