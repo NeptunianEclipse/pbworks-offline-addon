@@ -76,36 +76,30 @@ $(document).ready(function () {
     }
 
     function createSearchResults() {
+        $('.editLink').remove();
+        $('.backB').remove();
         var search = document.getElementById("searchBy").value;
         $("#localPage").text("Search for '" + search + "' returns: ");
-
-        try {
-            var backB = document.getElementById("backButton");
-            backB.parentNode.removeChild(backB);
-
-            var editB = document.getElementById("editLink");
-            editLink.parentNode.removeChild(editLink);
-        }
-        catch (error) {
-            //nothing here right now
-        }
-        finally {
-            if (searchResult == 0 || searchResult === undefined) {
+        if (searchResult == 0 || searchResult === undefined) {
                 $("#currentPage").text("No pages found!");
-            }
-            else {
+        }
+        else {
                 $("#currentPage").empty();
                 for (i = 0; i < searchResult.length; i++) {
                     var p = searchResult[i]
                     displaySearch(p, i);
 
                 }
-                createButtonListeners();
-            }
+            createButtonListeners();
+            
+            
         }
     }
 
     function createButtonListeners() {
+        $('.editLink').remove();
+        $('.backB').remove();
+        
         var viewButtons = document.querySelectorAll("div.pageDetails > .viewButton");
         //var editButtons = document.querySelectorAll("div.pageDetails > .editButton");
         // console.log(viewButtons);
@@ -122,10 +116,18 @@ $(document).ready(function () {
                 $("#currentPage").empty();
                 console.log(viewButtonName);
                 $("#localPage").text(searchResult[vbnInt].name);
-                $('<button id="backButton" class="backB">Back</button> <a href=' + editor_url + ' id="editLink">Edit</a>"').insertBefore("#currentPage");
-                document.getElementById("backButton").addEventListener('click', createSearchResults, false);
                 $("#currentPage").html(actualPage);
 
+                //can't figure out why multiple buttons are made, so this checks if any back buttons exist before adding them
+                var allBackB = document.getElementsByClassName("backB");
+                if (allBackB.length == 0) {
+                    $('<button class="backB">Back</button><a href=' + editor_url + ' class="editLink">Edit</a>').insertBefore("#currentPage");
+
+                    for (var p = 0; p < allBackB.length; p++) {
+                        allBackB[p].addEventListener('click', createSearchResults, false);
+                    }
+                    
+                }
             })
         }
     }
