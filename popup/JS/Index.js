@@ -30,7 +30,7 @@ document.addEventListener("click", function (e) {
     let url_view_modify = "Homepage.html";
     if (e.target.textContent === "Download Pages") {
         console.log("click!!!!!")
-    } else if (e.target.textContent === "View/Modify Local Pages") {
+    } else if (e.target.textContent === "View Local Pages") {
         browser.tabs.create({
             url: url_view_modify
         });

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Home | PBWorks</title>
+    <title>Home | PBWorks Addon</title>
     <script src="../jquery-3.4.1.min.js"></script>
     <script src="../data_base_api.js"></script>
     <script src="JS/LoadLocalPage.js"></script>
@@ -13,17 +13,17 @@
 <body>
     <header>
         <div id="leftHeader" class="inline">
-            <h1 class="inline">Addon</h1>
+            <h1 class="inline"><a href="Homepage.html">Addon</a></h1>
             <p id="internetStatus" class="internetDependent"></p>
         </div>
 
         <div id="searchDiv">
             <form>
                 <fieldset>
-                    <legend>search by what</legend>
-                    <input id="searchOid" type="radio" name="style" value="1" /><label for="searchOid">oid</label>
-                    <input id="searchName" type="radio" name="style" value="2" /><label for="searchName">name</label>
-                    <input id="searchAuthor" type="radio" name="style" value="3" /><label for="searchAuthor">author</label> <br />
+                    <legend>Search</legend>
+                    <input id="searchOid" type="radio" name="style" value="1" /><label for="searchOid">ID</label>
+                    <input id="searchName" type="radio" name="style" value="2" /><label for="searchName">Title</label>
+                    <input id="searchAuthor" type="radio" name="style" value="3" /><label for="searchAuthor">Last Author</label> <br />
                     <input type="text" id="searchBy" placeholder="Search locally . . ." class="inline" />
                     <input type="button" id="searchByWhat" class="inline" value="Search">
                 </fieldset>
@@ -35,7 +35,9 @@
     
 
     <div id="localFrame">
+
         <p id="localPage">Current Homepage</p>
+        <div id="frameHeader"></div>
         <div id="currentPage"></div>
     </div>
 

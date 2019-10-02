@@ -2,7 +2,7 @@ var searchResult;
 //this global variable simplifies the process of accessing pages in the search result, i.e. no weird handing around of strings
 
 $(document).ready(function () {
-    noHomepage();
+    setHomepage();
 
     //Header searchbar
     $("#searchHeaderB").click(function (event) {
@@ -71,17 +71,32 @@ $(document).ready(function () {
     }
 
     function createSearchResults() {
-        if (searchResult == 0 || searchResult === undefined) {
-            $("#currentPage").text("No pages found!");
-        }
-        else {
-            $("#currentPage").empty();
-            for (i = 0; i < searchResult.length; i++) {
-                var p = searchResult[i]
-                displaySearch(p, i);
+        var search = document.getElementById("searchBy").value;
+        $("#localPage").text("Search for '" + search + "' returns: ");
 
+        try {
+            var backB = document.getElementById("backButton");
+            backB.parentNode.removeChild(backB);
+
+            var editB = document.getElementById("editLink");
+            editLink.parentNode.removeChild(editLink);
+        }
+        catch (error) {
+            //nothing here right now
+        }
+        finally {
+            if (searchResult == 0 || searchResult === undefined) {
+                $("#currentPage").text("No pages found!");
             }
-            createButtonListeners();
+            else {
+                $("#currentPage").empty();
+                for (i = 0; i < searchResult.length; i++) {
+                    var p = searchResult[i]
+                    displaySearch(p, i);
+
+                }
+                createButtonListeners();
+            }
         }
     }
 
@@ -90,14 +105,21 @@ $(document).ready(function () {
         //var editButtons = document.querySelectorAll("div.pageDetails > .editButton");
 
         console.log(viewButtons);
+
         for (var j = 0; j < viewButtons.length; j++) {
             viewButtons[j].addEventListener('click', function (event) {
+                //viewing single page
                 var viewButtonName = event.target.name.slice(5);
                 var vbnInt = parseInt(viewButtonName);
                 var actualPage = searchResult[vbnInt].html;
+                console.log(searchResult[vbnInt])
+                var editor_url = makeURL(searchResult[vbnInt]);
+
                 $("#currentPage").empty();
                 console.log(viewButtonName);
                 $("#localPage").text(searchResult[vbnInt].name);
+                $('<button id="backButton" class="backB">Back</button> <a href=' + editor_url + ' id="editLink">Edit</a>"').insertBefore("#currentPage");
+                document.getElementById("backButton").addEventListener('click', createSearchResults, false);
                 $("#currentPage").html(actualPage);
 
             })
@@ -141,10 +163,19 @@ $(document).ready(function () {
         $("#currentPage").html("<h2>You haven't set a home page yet!</h2>");
     }
 
-    function setHomepage(pageObject) {
+    function setHomepage() {
         //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
-        console.log(pageObject);
-        $("#currentPage").html(pageObject.html);
+        
+        var result = get_data_name("FrontPage");
+        result.then((e) => {
+            if (e.target.result.length == 0 || e.target.result.length === undefined) {
+                noHomepage();
+            }
+            else {
+                $("#currentPage").html(e.target.result[0].html);
+            }
+        });
+
     }
 
 })

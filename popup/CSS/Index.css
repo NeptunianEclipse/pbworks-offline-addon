@@ -1,6 +1,7 @@
 html, body {
     width: auto;
     height: auto;
+    padding: 5px 20px 5px 20px;
 }
 
 .hidden {
@@ -15,6 +16,16 @@ html, body {
 
 #internet_status_outside {
     font-size: 16px;
+    text-align: center;
+}
+
+#internet_status {
+    font-size: 1.2em;
+    text-align: center;
+}
+
+#popup-content {
+    width:100%;
     text-align: center;
 }
 
@@ -34,9 +45,8 @@ Button {
     text-decoration: none;
     text-shadow: 0 1px 0 #154682;
     text-align: center;
-    width: 70%;
-    margin: 5px 5px 5px 15%;
-
+    width: 90%;
+    
 }
 
 Button:hover {

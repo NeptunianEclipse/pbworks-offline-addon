@@ -66,7 +66,7 @@ function upload_page(data){
         }).then(success => {
             console.log(success)
             resolve(success);
-            console.log("upload finfish......");
+            console.log("upload finish......");
         }).catch(error =>{
             
             console.log(error);

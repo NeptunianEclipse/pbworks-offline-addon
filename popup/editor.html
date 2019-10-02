@@ -1,29 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
 
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>myEditor</title>
+    <meta charset="utf-8" />
+    <title>Editor | PBWorks</title>
+    <script src="../jquery-3.4.1.min.js"></script>
+    <script src="../data_base_api.js"></script>
+    <script src="JS/LoadLocalPage.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/Editor.css" />
+    <link rel="stylesheet" type="text/css" href="CSS/Homepage.css" />
     <link href="../src/themes/default/default.css" rel="stylesheet" type="text/css">
     <link href="../src/themes/editor/editor.css" rel="stylesheet" type="text/css">
+
 </head>
-
 <body>
-    <h1 id="article_title">MyEditor</h1>
-    <button id="button_modify_title" type="button">Modify Page Title</button>
-    <label for="editor_id">
-        <textarea id="editor_id" name="content" style="width: 80%; height: 400%"></textarea>
-    </label>
+    <header>
+        <div id="leftHeader" class="inline">
+            <h1 class="inline"><a href="Homepage.html">Addon</a></h1>
+            <p id="internetStatus" class="internetDependent"></p>
+        </div>
 
-    <button id="button_save" type="button">Save</button>
-    <button id="button_update" type="button">Update</button>
+        <div id="searchDiv">
+            <form>
+                <fieldset>
+                    <legend>Search</legend>
+                    <input id="searchOid" type="radio" name="style" value="1" /><label for="searchOid">ID</label>
+                    <input id="searchName" type="radio" name="style" value="2" /><label for="searchName">Title</label>
+                    <input id="searchAuthor" type="radio" name="style" value="3" /><label for="searchAuthor">Last Author</label> <br />
+                    <input type="text" id="searchBy" placeholder="Search locally . . ." class="inline" />
+                    <input type="button" id="searchByWhat" class="inline" value="Search">
+                </fieldset>
+            </form>
+        </div>
 
-    <script charset="utf-8" src="../data_base_api.js"></script>
-    <script charset="utf-8" src="../src/kindeditor-all.js"></script>
-    <script charset="utf-8" src="../src/lang/en.js"></script>
-    <script charset="utf-8" src="../src/jQuery.min.js"></script>
-    <script charset="utf-8" src="JS/editor.js"></script>
+    </header>
 
+
+
+    <div id="localFrame">
+        <p id="article_title">MyEditor</p>
+        <button id="button_modify_title" type="button">Modify Page Title</button>
+        <div id="editorPage">
+
+            <label for="editor_id">
+                <textarea id="editor_id" name="content" style="width: 80%; height: 400%"></textarea>
+            </label>
+
+            <button id="button_save" type="button">Save</button>
+            <button id="button_update" type="button">Update</button>
+
+            <script charset="utf-8" src="../data_base_api.js"></script>
+            <script charset="utf-8" src="../src/kindeditor-all.js"></script>
+            <script charset="utf-8" src="../src/lang/en.js"></script>
+            <script charset="utf-8" src="../src/jQuery.min.js"></script>
+            <script charset="utf-8" src="JS/editor.js"></script>
+
+
+        </div>
+    </div>
 </body>
+
 
 </html>
