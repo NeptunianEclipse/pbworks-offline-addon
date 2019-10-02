@@ -32,7 +32,7 @@ $(document).ready(function () {
         $("#searchByWhat").click(function (event) {
             var search = document.getElementById("searchBy").value;
             $("#localPage").text("Search name for '" + search + "' returns: ");
-            var result =  get_data_name(search);
+            var result = get_data_name(search);
             result.then((e) => {
                 console.log(e.target.result);
                 searchResult = [];
@@ -55,92 +55,96 @@ $(document).ready(function () {
                 createSearchResults();
             });
         })
-    })
-
-function searchFor(search) { //search comes from button listeners above
-    $("#localPage").text("Search for '" + search + "' returns: ");
-    var result = get_data_name(search);
-    result.then((e) => {
-        console.log(e.target.result);
-        searchResult = [];
-        searchResult = e.target.result;
-        createSearchResults();
     });
-}
 
-function createSearchResults() {
-    if (searchResult == 0 || searchResult === undefined) {
-        $("#currentPage").text("No pages found!");
+
+
+    function searchFor(search) { //search comes from button listeners above
+        $("#localPage").text("Search for '" + search + "' returns: ");
+        var result = get_data_name(search);
+        result.then((e) => {
+            console.log(e.target.result);
+            searchResult = [];
+            searchResult = e.target.result;
+            createSearchResults();
+        });
     }
-    else {
-        $("#currentPage").empty();
-        for (i = 0; i < searchResult.length; i++) {
-            var p = searchResult[i]
-            displaySearch(p, i);
 
+    function createSearchResults() {
+        if (searchResult == 0 || searchResult === undefined) {
+            $("#currentPage").text("No pages found!");
         }
-        createButtonListeners();
-    }
-}
-
-function createButtonListeners() {
-    var viewButtons = document.querySelectorAll("div.pageDetails > .viewButton");
-    //var editButtons = document.querySelectorAll("div.pageDetails > .editButton");
-
-    console.log(viewButtons);
-    for (var j = 0; j < viewButtons.length; j++) {
-        viewButtons[j].addEventListener('click', function (event) {
-            var viewButtonName = event.target.name.slice(5);
-            var vbnInt = parseInt(viewButtonName);
-            var actualPage = searchResult[vbnInt].html;
+        else {
             $("#currentPage").empty();
-            console.log(viewButtonName);
-            $("#localPage").text(searchResult[vbnInt].name);
-            $("#currentPage").html(actualPage);
+            for (i = 0; i < searchResult.length; i++) {
+                var p = searchResult[i]
+                displaySearch(p, i);
 
-        })
-    }
-}
-
-
-function toEditor(editor_url) {
-    console.log("click here");
-    browser.tabs.create({
-        url: editor_url
-    });
-}
-
-function makeURL(singlePage) {
-    let editor_url = "editor.html?";
-    return editor_url + 'oid' + "=" + singlePage.oid;
-}
-
-
-//basic display of all search items, will be cleaned up later
-function displaySearch(singlePage, pageArrayNumber) {
-    //this function is iterated over for each object in the search result array
-    let comment;
-    let editor_url = makeURL(singlePage);
-    if (singlePage.comment === undefined) {
-        comment = "There are no comments for this page"
-    } else {
-        comment = singlePage.comment;
+            }
+            createButtonListeners();
+        }
     }
 
-    var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a>" + "</h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
-    var stringEntry1 = "<p>OID: " + singlePage.oid + "</p>";
-    var viewEntry = "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>";
-    var editEntry = "<a href=" + editor_url + ">Edit</a>";
+    function createButtonListeners() {
+        var viewButtons = document.querySelectorAll("div.pageDetails > .viewButton");
+        //var editButtons = document.querySelectorAll("div.pageDetails > .editButton");
 
-    $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + viewEntry + editEntry +"</div>");
-}
+        console.log(viewButtons);
+        for (var j = 0; j < viewButtons.length; j++) {
+            viewButtons[j].addEventListener('click', function (event) {
+                var viewButtonName = event.target.name.slice(5);
+                var vbnInt = parseInt(viewButtonName);
+                var actualPage = searchResult[vbnInt].html;
+                $("#currentPage").empty();
+                console.log(viewButtonName);
+                $("#localPage").text(searchResult[vbnInt].name);
+                $("#currentPage").html(actualPage);
 
-function noHomepage() {
-    $("#currentPage").html("<h2>You haven't set a home page yet!</h2>");
-}
+            })
+        }
+    }
 
-function setHomepage(pageObject) {
-    //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
-    console.log(pageObject);
-    $("#currentPage").html(pageObject.html);
-}
+
+    function toEditor(editor_url) {
+        console.log("click here");
+        browser.tabs.create({
+            url: editor_url
+        });
+    }
+
+    function makeURL(singlePage) {
+        let editor_url = "editor.html?";
+        return editor_url + 'oid' + "=" + singlePage.oid;
+    }
+
+
+    //basic display of all search items, will be cleaned up later
+    function displaySearch(singlePage, pageArrayNumber) {
+        //this function is iterated over for each object in the search result array
+        let comment;
+        let editor_url = makeURL(singlePage);
+        if (singlePage.comment === undefined) {
+            comment = "There are no comments for this page"
+        } else {
+            comment = singlePage.comment;
+        }
+
+        var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a>" + "</h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
+        var stringEntry1 = "<p>OID: " + singlePage.oid + "</p>";
+        var viewEntry = "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>";
+        var editEntry = "<a href=" + editor_url + ">Edit</a>";
+
+        $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + viewEntry + editEntry + "</div>");
+    }
+
+    function noHomepage() {
+        $("#currentPage").html("<h2>You haven't set a home page yet!</h2>");
+    }
+
+    function setHomepage(pageObject) {
+        //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
+        console.log(pageObject);
+        $("#currentPage").html(pageObject.html);
+    }
+
+})
