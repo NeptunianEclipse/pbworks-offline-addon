@@ -25,17 +25,17 @@ class PBWorks {
 
     constructor(workspaceName: string, adminKey: string) {
         this.workspaceName = workspaceName;
-        this.baseRequestURL = `${workspaceName}.${basePBWorksURL}/api_v2/op/`;
+        this.baseRequestURL = `${workspaceName}.${basePBWorksURL}/api_v2/?op=`;
         this.adminKey = adminKey;
     }
 
     async operation(name: string, inputs: IDict<any>): Promise<object> {
-        let inputsString = `/admin_key/${this.adminKey}`;
+        let inputsString = `&admin_key=${this.adminKey}`;
         for (let key of Object.keys(inputs)) {
-            inputsString += "/" + key;
-            inputsString += "/" + inputs[key];
+            inputsString += "&" + key;
+            inputsString += "=" + inputs[key];
         }
-        let requestString = "https://" + this.baseRequestURL + name + inputsString;
+        let requestString = "http://" + this.baseRequestURL + name + inputsString;
 
         let response = await fetch(corsProxyURL + requestString, {mode: 'cors'});
         let text = await response.text();

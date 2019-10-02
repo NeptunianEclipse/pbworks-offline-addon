@@ -16,17 +16,17 @@ const corsProxyURL = "https://cors-anywhere.herokuapp.com/";
 class PBWorks {
     constructor(workspaceName, adminKey) {
         this.workspaceName = workspaceName;
-        this.baseRequestURL = `${workspaceName}.${basePBWorksURL}/api_v2/op/`;
+        this.baseRequestURL = `${workspaceName}.${basePBWorksURL}/api_v2/?op=`;
         this.adminKey = adminKey;
     }
     operation(name, inputs) {
         return __awaiter(this, void 0, void 0, function* () {
-            let inputsString = `/admin_key/${this.adminKey}`;
+            let inputsString = `&admin_key=${this.adminKey}`;
             for (let key of Object.keys(inputs)) {
-                inputsString += "/" + key;
-                inputsString += "/" + inputs[key];
+                inputsString += "&" + key;
+                inputsString += "=" + inputs[key];
             }
-            let requestString = "https://" + this.baseRequestURL + name + inputsString;
+            let requestString = "http://" + this.baseRequestURL + name + inputsString;
             let response = yield fetch(corsProxyURL + requestString, { mode: 'cors' });
             let text = yield response.text();
             let jsonString = text.substring(11, text.length - 3);

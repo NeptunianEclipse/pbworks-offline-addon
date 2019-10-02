@@ -9,10 +9,7 @@ $(document).ready(function () {
         var search = document.getElementById("searchHeader").value;
         console.log(search);
         searchFor(search);
-
-
     });
-
 
 
     $("#searchOid").click(function (event) {
@@ -30,6 +27,7 @@ $(document).ready(function () {
         })
     });
 
+
     $("#searchName").click(function (event) {
         $("#searchByWhat").click(function (event) {
             var search = document.getElementById("searchBy").value;
@@ -42,7 +40,9 @@ $(document).ready(function () {
                 createSearchResults();
             });
         })
-        });
+    });
+
+
     $("#searchAuthor").click(function (event) {
         $("#searchByWhat").click(function (event) {
             var search = document.getElementById("searchBy").value;
@@ -56,9 +56,6 @@ $(document).ready(function () {
             });
         })
     })
-
-});
-
 
 function searchFor(search) { //search comes from button listeners above
     $("#localPage").text("Search for '" + search + "' returns: ");
@@ -104,6 +101,7 @@ function createButtonListeners() {
         })
     }
 }
+
 
 function toEditor(editor_url) {
     console.log("click here");
