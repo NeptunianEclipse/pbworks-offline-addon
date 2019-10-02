@@ -4,13 +4,6 @@ var searchResult;
 $(document).ready(function () {
     setHomepage();
 
-    //Header searchbar
-    $("#searchHeaderB").click(function (event) {
-        var search = document.getElementById("searchHeader").value;
-        console.log(search);
-        searchFor(search);
-    });
-
 
     $("#searchOid").click(function (event) {
         $("#searchByWhat").click(function (event) {
@@ -20,8 +13,7 @@ $(document).ready(function () {
             var result = get_data_oid(search);
             result.then((e) => {
                 console.log(e.target.result);
-                searchResult = [];
-                searchResult = e.target.result;
+                searchResult = [e.target.result];
                 createSearchResults();
             });
         })
@@ -37,7 +29,20 @@ $(document).ready(function () {
                 console.log(e.target.result);
                 searchResult = [];
                 searchResult = e.target.result;
-                createSearchResults();
+                if (searchResult.length === 0 || searchResult.length === undefined) {
+                    $("#currentPage").text("No pages found!");
+                }
+                else {
+                    $("#currentPage").empty();
+                    for (i = 0; i < searchResult.length; i++) {
+                        var p = searchResult[i];
+                        if (p.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || search.toLowerCase().indexOf(p.name.toLowerCase()) !== -1) {
+                            displaySearch(p, i);
+
+                        }
+                        createButtonListeners();
+                    }
+                }
             });
         })
     });
@@ -103,8 +108,7 @@ $(document).ready(function () {
     function createButtonListeners() {
         var viewButtons = document.querySelectorAll("div.pageDetails > .viewButton");
         //var editButtons = document.querySelectorAll("div.pageDetails > .editButton");
-
-        console.log(viewButtons);
+        // console.log(viewButtons);
 
         for (var j = 0; j < viewButtons.length; j++) {
             viewButtons[j].addEventListener('click', function (event) {

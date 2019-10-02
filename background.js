@@ -58,13 +58,13 @@ function download_page() {
 
 function upload_page(data){
     return new Promise((resolve, reject) => {
-        console.log("begin uploading..........")
+        console.log("begin uploading..........");
         let pbworks = new PBWorks(workspace_name, admin_key);
         pbworks.putPage({
             page: data.name,
-            html: data.html
+            html: encodeURIComponent(data.html)
         }).then(success => {
-            console.log(success)
+            console.log(success);
             resolve(success);
             console.log("upload finish......");
         }).catch(error =>{
@@ -104,23 +104,32 @@ function handleMessage(request, sender, sendResponse) {
                     insert(pageInfo)
                         .then(sendResponse({response: true}));
                 });
-    
+
         } else {
             sendResponse({response: false});
         }
     }
     if(request.data){
         console.log(request.data);
-        let page = request.data
+        let page = request.data;
         upload_page(page)
         .then(success =>{
             console.log(success);
-            sendResponse({response: true});
+            browser.tabs.sendMessage(
+                request.tab_id,
+                {response: true}
+            ).then(response => {
+                console.log(response.response)
+            })
         }).catch(error =>{
-            sendResponse({response: false});
-        })
+            browser.tabs.sendMessage(
+                request.tab_id,
+                {response: false}
+            ).then(response => {
+                console.log(response.response)
+            })
+        });
     }
-   
 }
 
 browser.runtime.onMessage.addListener(handleMessage);

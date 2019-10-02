@@ -27,6 +27,8 @@ class PBWorks {
                 inputsString += "=" + inputs[key];
             }
             let requestString = "http://" + this.baseRequestURL + name + inputsString;
+            console.log("requestString :");
+            console.log(requestString);
             let response = yield fetch(corsProxyURL + requestString, { mode: 'cors' });
             let text = yield response.text();
             let jsonString = text.substring(11, text.length - 3);

@@ -1,10 +1,13 @@
 function saveOptions(e) {
     e.preventDefault();
     let key = document.querySelector("#key").value;
+    let name = document.querySelector("#name").value;
     browser.storage.local.set({
-        pbwork_key: key
+        pbwork_key: key,
+        pbwork_user_name: name
     });
     document.querySelector("#admin_key").innerHTML = key;
+    document.querySelector("#user_name").innerHTML = name;
 }
 
 function restoreOptions() {
