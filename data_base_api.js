@@ -174,6 +174,20 @@ function get_data_name(name) {
     })
 }
 
+function get_data_name1(name) {
+    return new Promise((resolve, reject) => {
+        init_database()
+            .then(open_storage)
+            .then(object_storage => {
+                let keyRange = IDBKeyRange.only(name);
+                console.log("begin get all " + name);
+                let getAllKeysRequest = object_storage.index(INDEX_STORAGE_NAME).getAll(keyRange);
+                getAllKeysRequest.onsuccess = resolve;
+                getAllKeysRequest.onerror = reject;
+            })
+    })
+}
+
 /**
  * get data from database according to author
  * once finish, a array which contain data will be passed to resolve function

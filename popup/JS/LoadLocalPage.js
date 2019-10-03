@@ -189,7 +189,7 @@ $(document).ready(function () {
     function setHomepage() {
         //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
         
-        var result = get_data_name("FrontPage");
+        var result = get_data_name1("FrontPage");
         result.then((e) => {
             if (e.target.result.length === 0 || e.target.result.length === undefined) {
                 noHomepage();
