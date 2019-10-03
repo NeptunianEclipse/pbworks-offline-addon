@@ -175,13 +175,15 @@ $(document).ready(function () {
         var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a>" + "</h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
         var stringEntry1 = "<p>OID: " + singlePage.oid + "</p>";
         var viewEntry = "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>";
-        var editEntry = "<a href=" + editor_url + ">Edit</a>";
+        var editEntry = '<a href=' + editor_url + ' class="editPage">Edit</a>';
 
         $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + viewEntry + editEntry + "</div>");
     }
 
+
+
     function noHomepage() {
-        $("#currentPage").html("<h2>You haven't set a home page yet!</h2>");
+        $("#currentPage").html("<h2>You haven't downloaded a frontpage!</h2>");
     }
 
     function setHomepage() {
