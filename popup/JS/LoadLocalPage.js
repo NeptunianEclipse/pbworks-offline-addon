@@ -12,8 +12,8 @@ $(document).ready(function () {
         button.on("click", searchByOid);
     });
 
-
-    $("#searchName").click(function (event) {
+    let searchName = $("#searchName");
+    searchName.click(function (event) {
         let button = $("#searchByWhat");
         button.off("click", searchByAuthor);
         button.off("click", searchByOid);
@@ -200,5 +200,5 @@ $(document).ready(function () {
         });
 
     }
-
+    searchName.click();
 })
