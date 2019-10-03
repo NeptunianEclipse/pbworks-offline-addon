@@ -28,7 +28,7 @@
                     <input id="searchName" type="radio" name="style" value="2" /><label for="searchName">Title</label>
                     <input id="searchAuthor" type="radio" name="style" value="3" /><label for="searchAuthor">Last Author</label> <br />
                     <input type="text" id="searchBy" placeholder="Search locally . . ." class="inline" />
-                    <input type="button" id="searchByWhat" class="inline" value="Search">
+                    <input type="button" id="searchByWhatEditor" class="inline" value="Search">
                 </fieldset>
             </form>
         </div>
@@ -38,16 +38,16 @@
 
 
     <div id="localFrame">
-        <p id="article_title">MyEditor</p>
-        <button id="button_modify_title" type="button">Modify Page Title</button>
+        <p id="article_title" class="inline">MyEditor</p>
+        <button id="button_modify_title" type="button">Modify Title</button>
         <div id="editorPage">
 
             <label for="editor_id">
                 <textarea id="editor_id" name="content" style="width: 80%; height: 400%"></textarea>
             </label>
 
-            <button id="button_save" type="button">Save</button>
             <button id="button_update" type="button">Update</button>
+            <button id="button_save" type="button">Save</button>
 
             <script charset="utf-8" src="../data_base_api.js"></script>
             <script charset="utf-8" src="../src/kindeditor-all.js"></script>
