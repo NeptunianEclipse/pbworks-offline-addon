@@ -64,6 +64,7 @@ p {
     padding:10px;
 }
 
+
 #searchByWhat, #searchByWhatEditor { /*button for above text box, and it's duplicate on the editor page */
     display:block;
     width:20%;
@@ -114,7 +115,7 @@ p {
 
 
 
-.backB, .editLink, .viewButton, .editPage, #button_save, #button_modify_title, #button_update {
+.newPageButton, .backB, .editLink, .viewButton, .editPage, #button_save, #button_modify_title, #button_update {
     /*Back button that appears on single page viewer*/
     display: inline-block;
     width: 70px;
@@ -131,6 +132,12 @@ p {
     margin-left: 22px;
     margin-top:10px;
 }
+.newPageButton {
+    width:110px;
+    float:right;
+    margin-top: 25px;
+    margin-right:10px;
+}
 
 .editLink, .editPage {
     /*Edit 'button' is actually just a link*/
@@ -144,11 +151,10 @@ p {
     margin-right:20px
 }
 
- 
-#button_modify_title {
+
+#button_modify_title{
     width: 110px;
     margin-left: 50px;
-
 }
 
 .pageDetails {
