@@ -9,15 +9,6 @@ browser.contextMenus.create({
     title: "Download PBwork article"
 });
 
-//add an listener for item in right-click
-browser.contextMenus.onClicked.addListener(function (info, tab) {
-    if (info.menuItemId === "PBwork-download") {
-        browser.tabs.executeScript({
-            file: "./popup/JS/PBworkDownload.js"
-        });
-    }
-});
-
 // promise reject callback function
 function onError(error) {
     console.log(`Error: ${error}`);
@@ -51,12 +42,11 @@ function download_page() {
             oid: oid_num
         }).then((pageInfo) => {
             resolve(pageInfo);
-            console.log("download finish");
         });
     })
 }
 
-function upload_page(data){
+function upload_page(data) {
     return new Promise((resolve, reject) => {
         console.log("begin uploading..........");
         let pbworks = new PBWorks(workspace_name, admin_key);
@@ -64,11 +54,9 @@ function upload_page(data){
             page: data.name,
             html: encodeURIComponent(data.html)
         }).then(success => {
-            console.log(success);
             resolve(success);
             console.log("upload finish......");
-        }).catch(error =>{
-            
+        }).catch(error => {
             console.log(error);
             reject(error);
             console.log("upload fail")
@@ -77,43 +65,61 @@ function upload_page(data){
 
 }
 
+function runDownload(tab) {
+    console.log("tab is ");
+    console.log(tab);
+    let url = tab.url;
+    let flag, error_string;
+    console.log("url: "+url);
+    let pbwork_re = new RegExp("^.+\.pbworks.com/w/page/.*");
+    let outcome = pbwork_re.test(url);
+    if (outcome){
+        oid_num = new RegExp("^.+\.pbworks.com/w/page/([0-9]+)/").exec(url)[1];
+        workspace_name = new RegExp("http://(.+)\.pbworks.com/w/page/.*").exec(url)[1];
+        console.log(workspace_name);
+        open_local_storage()
+            .then(get_admin_key)
+            .then(download_page)
+            .then(function (pageInfo) {
+                if (typeof pageInfo.html === "undefined") {
+                    console.log("download failed!");
+                    console.log(pageInfo.error_string);
+                    error_string = pageInfo.error_string;
+                    flag = false;
+                }else {
+                    insert(pageInfo)
+                        .then(() => {
+                            console.log("download success");
+                        });
+                    flag = true;
+                }
+
+                if (flag){
+                    browser.tabs.sendMessage(tab.id, {
+                        response: true,
+                    }).then(()=>{console.log("send true signal")});
+                }else{
+                    browser.tabs.sendMessage(tab.id, {
+                        response: false,
+                        type: "PBwork API Return Error",
+                        message: error_string
+                    }).then(()=>{console.log("send false singal")});
+                }
+            });
+    }else{
+        browser.tabs.sendMessage(tab.id, {
+            response: false,
+            type: "Target Website is Invalid",
+            message: "This website is not belong to PBwork!"
+        }).then(()=>{console.log("false because of url")});
+    }
+}
+
 //
 function handleMessage(request, sender, sendResponse) {
-    console.log(request)
-    if (request.current_url){
-        console.log("url"+request.current_url);
-        let url = request.current_url;
-        let pbwork_re = new RegExp("^.+\.pbworks.com/w/page/[0-9]{9}/.*");
-        let outcome = pbwork_re.test(url);
-        if (outcome) {
-            sendResponse({response: true});
-            oid_num = new RegExp("[0-9]{9}")
-                .exec(url)[0];
-            workspace_name = new RegExp("^.*\.pbworks\.com")
-                .exec(url)[0]
-                .replace(/^http:\/\//, "")
-                .replace(/\.pbworks\.com/, "");
-            let p = new Promise(function (resolve, reject) {
-                resolve();
-            });
-            p.then(open_local_storage)
-                .then(get_admin_key)
-                .then(download_page)
-                .then(function (pageInfo) {
-                    // insert page into database
-                    insert(pageInfo)
-                        .then(sendResponse({response: true}));
-                });
-
-        } else {
-            sendResponse({response: false});
-        }
-    }
-    if(request.data){
-        console.log(request.data);
-        let page = request.data;
-        upload_page(page)
-        .then(success =>{
+    let page = request.data;
+    upload_page(page)
+        .then(success => {
             console.log(success);
             browser.tabs.sendMessage(
                 request.tab_id,
@@ -121,18 +127,30 @@ function handleMessage(request, sender, sendResponse) {
             ).then(response => {
                 console.log(response.response)
             })
-        }).catch(error =>{
-            browser.tabs.sendMessage(
-                request.tab_id,
-                {response: false}
-            ).then(response => {
-                console.log(response.response)
-            })
-        });
-    }
+        }).catch(error => {
+        browser.tabs.sendMessage(
+            request.tab_id,
+            {response: false}
+        ).then(response => {
+            console.log(response.response)
+        })
+    });
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
+
+//add an listener for item in right-click
+browser.contextMenus.onClicked.addListener(function (info, tab) {
+    if (info.menuItemId === "PBwork-download") {
+        browser.tabs.executeScript({
+            file: "./popup/JS/PBworkDownload.js"
+        });
+        let querying = browser.tabs.query({currentWindow: true, active: true});
+        querying.then(function (tabs) {
+            runDownload(tabs[0]);
+        }, onError);
+    }
+});
 
 
 

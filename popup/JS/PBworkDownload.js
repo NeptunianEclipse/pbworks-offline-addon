@@ -2,24 +2,16 @@ function handleError(error) {
     console.log(`Error: ${error}`);
 }
 
-function handleResponse(message) {
-    if(message.response === false){
-        alert("This page is not a valid PBworks page!");
-    }
-    if (message.response === true){
+
+function handleMessage(request, sender, sendResponse) {
+    console.log(request);
+    if (request.response === true) {
         alert("This page has been stored in database!");
+    } else {
+        alert("There is ERROR in downloading: \n\n" + "Type:\n" +
+            request.type + "\n\nError Message:\n" + request.message);
     }
 }
 
-function send_url_to_background(){
-    let tab_url = window.top.location.href;
-    let sending = browser.runtime.sendMessage({
-        current_url:tab_url
-    });
-    sending.then(handleResponse, handleError);
-}
-
-send_url_to_background();
-
-
+browser.runtime.onMessage.addListener(handleMessage);
 
