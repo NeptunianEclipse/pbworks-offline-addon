@@ -103,13 +103,12 @@ class PBWorks {
     }
 
     async createPage(
-        inputs: {
-            page: string,
-            html: string
+        inputs:{
+            page: string
         }
-    ): Promise<object> {
-        let json = await this.operation("CreatePage", inputs);
-        return json["success"];
+    ): Promise<object>{
+
+        return null;
     }
 
 }

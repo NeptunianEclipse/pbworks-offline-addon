@@ -2,12 +2,12 @@ function handleError(error) {
     console.log(`Error: ${error}`);
 }
 
-function handleResponse(message){
-    console.log(message);  
-    if(message.response === false){
+function handleResponse(message) {
+    console.log(message);
+    if (message.response === false) {
         alert("upload fail");
     }
-    if (message.response === true){
+    if (message.response === true) {
         alert("upload successfully");
     }
 
@@ -15,8 +15,8 @@ function handleResponse(message){
 
 // receive and parse url parameters.
 function GetQueryString(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);//search,find parameter behind '?' 
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    let r = window.location.search.substr(1).match(reg);//search,find parameter behind '?'
     if (r != null)
         return unescape(r[2]);
     return null;
@@ -24,17 +24,18 @@ function GetQueryString(name) {
 
 // save locally function
 
-function saveLocal(object){
+function saveLocal(object) {
+    object.mtime = new Date().getTime();
     upgrade_data(object)
-    .then(event => {
-        alert("Page: "+object.name+" has been save in local!");
-    }).catch(event =>{
+        .then(event => {
+            alert("Page: " + object.name + " has been save in local!");
+        }).catch(event => {
         alert("fail")
     })
 }
 
 
-function sendUploadObjectToBackground(object){
+function sendUploadObjectToBackground(object) {
     // get tab id
     let gettingCurrent = browser.tabs.getCurrent();
     gettingCurrent.then((tabInfo) => {
@@ -76,14 +77,19 @@ KindEditor.ready(function (K) {
 
 let page;
 let oid = GetQueryString('oid');
+let newPageName;
 oid = parseInt(oid); // note that data type of key primary
-get_data_oid(oid)
-    .then(event => {
-        $('#article_title').text(event.target.result.name)
-        editor.html(event.target.result.html);
-        page = event.target.result;
-    });
-
+if (oid === -1) {
+    newPageName = GetQueryString('name');
+    $('#article_title').text(newPageName);
+} else {
+    get_data_oid(oid)
+        .then(event => {
+            $('#article_title').text(event.target.result.name);
+            editor.html(event.target.result.html);
+            page = event.target.result;
+        });
+}
 
 
 $('#button_save').click(function () {
@@ -103,8 +109,13 @@ $('#button_update').click(function () {
     editor.sync();
     let new_context = $('#editor_id').val();
     page.html = new_context;
-    saveLocal(page);
-    sendUploadObjectToBackground(page);
+    if (oid !== -1) {
+        saveLocal(page);
+        sendUploadObjectToBackground(page);
+    }else{
+
+    }
+
 });
 
 /**

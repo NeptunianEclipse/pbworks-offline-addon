@@ -9,7 +9,7 @@ interface PageInfo {
 /**
  * Provides functions for interacting with the PBWorks web API
  */
-export default class PBWorks {
+class PBWorks {
 
     readonly workspaceName: string;
     readonly baseRequestURL: string;
@@ -17,7 +17,7 @@ export default class PBWorks {
 
     constructor(workspaceName: string, adminKey: string) {
         this.workspaceName = workspaceName;
-        this.baseRequestURL = `${workspaceName}.${basePBWorksURL}/api_v2/op/`;
+        this.baseRequestURL = `${workspaceName}.${basePBWorksURL}/api_v2/?op=`;
         this.adminKey = adminKey;
     }
 
@@ -38,49 +38,58 @@ export default class PBWorks {
      */
     async operationPost(name: string, inputs: Map<string, any>, bodyData: Map<string, any>): Promise<object> {
         let formData = new FormData();
-        for(let [key, value] of bodyData) {
+        for (let [key, value] of bodyData) {
             formData.append(key, value.toString());
         }
         return await this.operation(name, 'POST', inputs, formData.toString())
     }
 
     private async operation(name: string, method: string, inputs: Map<string, any>, body: string) {
-        let inputsString = `/admin_key/${this.adminKey}`;
-        for(let [key, value] of inputs) {
-            inputsString += "/" + key + "/" + value.toString();
+        let response;
+        let inputsString = `&admin_key=${this.adminKey}`;
+        for (let [key, value] of inputs) {
+            inputsString += "&" + key + "=" + value.toString();
         }
         let requestString = "https://" + this.baseRequestURL + name + inputsString;
+        if (body === '') {
+            response = await fetch(corsProxyURL + requestString, {
+                method: method,
+                mode: 'cors',
+                headers: new Headers({
+                    'X-Requested-With': 'XMLHttpRequest'
+                })
+            });
+        } else {
+            response = await fetch(corsProxyURL + requestString, {
+                method: method,
+                mode: 'cors',
+                body: body
+            });
+        }
 
-        let response = await fetch(corsProxyURL + requestString, {
-            method: method,
-            mode: 'cors',
-            body: body
-        });
         let text = await response.text();
-
+        console.log(text);
         let jsonString = text.substring(11, text.length - 3);
         return JSON.parse(jsonString);
     }
 
     /**
      * Requests from PBWorks and returns the HTML content for the specified page
-     * @param page - the name of the page
      * @param oid - the object ID of the page
      * @param raw - whether to return the raw HTML content rather than preprocessed (I don't know what this means)
      */
-    async getPageContent(page?: string, oid?: number, raw: boolean = false): Promise<string> {
-        if(page == null && oid == null) {
-            throw new Error("'page' or 'oid' must be provided");
+    async getPageContent(oid?: number, raw: boolean = false): Promise<object> {
+        if (oid === null) {
+            throw new Error("'oid' must be provided");
         }
 
         let json = await this.operationGet("GetPage", new Map(Object.entries({
-            page: page,
             oid: oid,
             raw: raw,
             verbose: true
         })));
 
-        return json['html'];
+        return json;
     }
 
     /**
@@ -90,13 +99,11 @@ export default class PBWorks {
      * @param createIfMissing - if true, then a page will be created if it doesn't already exist
      */
     async putPageContent(page: string, html: string, createIfMissing: boolean = true): Promise<boolean> {
-        let json = await this.operationPost("PutPage", new Map(Object.entries({
-                page: page,
-                create_if_missing: createIfMissing
-            })),
-            new Map(Object.entries({
-                html: html
-            })));
+        let json = await this.operationGet("PutPage", new Map(Object.entries({
+            page: page,
+            create_if_missing: createIfMissing,
+            html: encodeURIComponent(html)
+        })));
         return json['success'];
     }
 
@@ -108,7 +115,7 @@ export default class PBWorks {
         let pages = json['pages'];
 
         let pageInfoArray: PageInfo[] = [];
-        for(let pageName of Object.keys(pages)) {
+        for (let pageName of Object.keys(pages)) {
             pageInfoArray.push({
                 name: pageName,
                 oid: pages[pageName]

@@ -28,6 +28,16 @@ $(document).ready(function () {
         button.on("click", searchByAuthor);
     });
 
+
+
+    $("#createNewPage").click(function (event) {
+        let newPageName = prompt("Please input new page name:");
+        let editorUrl =  "editor.html?";
+        editorUrl = editorUrl + 'oid' + "=" + "-1" + "&name" + "=" + newPageName;
+        toEditor(editorUrl);
+    });
+
+
     function searchByOid(event) {
         var search = document.getElementById("searchBy").value;
         search = parseInt(search);
@@ -50,8 +60,7 @@ $(document).ready(function () {
             searchResult = e.target.result;
             if (searchResult.length === 0 || searchResult.length === undefined) {
                 $("#currentPage").text("No pages found!");
-            }
-            else {
+            } else {
                 $("#currentPage").empty();
                 for (i = 0; i < searchResult.length; i++) {
                     var p = searchResult[i];
@@ -78,7 +87,6 @@ $(document).ready(function () {
     }
 
 
-
     function searchFor(search) { //search comes from button listeners above
         $("#localPage").text("Search for '" + search + "' returns: ");
         var result = get_data_name(search);
@@ -96,25 +104,21 @@ $(document).ready(function () {
         var search = document.getElementById("searchBy").value;
         $("#localPage").text("Search for '" + search + "' returns: ");
         if (searchResult === 0 || searchResult === undefined) {
-                $("#currentPage").text("No pages found!");
-        }
-        else {
-                $("#currentPage").empty();
-                for (i = 0; i < searchResult.length; i++) {
-                    var p = searchResult[i];
-                    displaySearch(p, i);
-
-                }
+            $("#currentPage").text("No pages found!");
+        } else {
+            $("#currentPage").empty();
+            for (i = 0; i < searchResult.length; i++) {
+                var p = searchResult[i];
+                displaySearch(p, i);
+            }
             createButtonListeners();
-            
-            
         }
     }
 
     function createButtonListeners() {
         $('.editLink').remove();
         $('.backB').remove();
-        
+
         var viewButtons = document.querySelectorAll("div.pageDetails > .viewButton");
         //var editButtons = document.querySelectorAll("div.pageDetails > .editButton");
         // console.log(viewButtons);
@@ -141,7 +145,7 @@ $(document).ready(function () {
                     for (var p = 0; p < allBackB.length; p++) {
                         allBackB[p].addEventListener('click', createSearchResults, false);
                     }
-                    
+
                 }
             })
         }
@@ -181,24 +185,24 @@ $(document).ready(function () {
     }
 
 
-
     function noHomepage() {
         $("#currentPage").html("<h2>You haven't downloaded a frontpage!</h2>");
     }
 
     function setHomepage() {
         //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
-        
+
         var result = get_data_name1("FrontPage");
         result.then((e) => {
             if (e.target.result.length === 0 || e.target.result.length === undefined) {
                 noHomepage();
-            }
-            else {
+            } else {
                 $("#currentPage").html(e.target.result[0].html);
             }
         });
 
     }
     searchName.click();
-})
+});
+
+

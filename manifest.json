@@ -7,13 +7,15 @@
     "400": "assets/img/pb_400x400.png"
   },
   "permissions": [
+    "<all_urls>",
+    "tabs",
     "activeTab",
     "contextMenus",
     "storage"
   ],
   "background": {
     "scripts": [
-      "./dist/PBwork.js",
+      "./dist/pbworks.js",
       "data_base_api.js",
       "background.js"
     ]

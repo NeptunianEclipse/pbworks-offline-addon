@@ -7,6 +7,7 @@ function handleMessage(request, sender, sendResponse) {
     console.log(request);
     if (request.response === true) {
         alert("This page has been stored in database!");
+
     } else {
         alert("There is ERROR in downloading: \n\n" + "Type:\n" +
             request.type + "\n\nError Message:\n" + request.message);
