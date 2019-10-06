@@ -1,5 +1,3 @@
-
-
 const basePBWorksURL = "pbworks.com";
 const corsProxyURL = "https://cors-anywhere.herokuapp.com/";
 // const adminKey = "5VXfJkL9eybJ3xuycKYU";
@@ -11,11 +9,10 @@ interface IDict<V> {
     [key: string]: V;
 }
 
-// interface PageInfo {
-//     name: string;
-//     oid: number;
-//     html: string;
-// }
+interface PageInfo {
+    name: string;
+    oid: number;
+}
 
 class PBWorks {
 
@@ -31,18 +28,19 @@ class PBWorks {
 
     async operation(name: string, inputs: IDict<any>): Promise<object> {
         let inputsString = `&admin_key=${this.adminKey}`;
-        for (let key of Object.keys(inputs)) {
-            inputsString += "&" + key;
-            inputsString += "=" + inputs[key];
+        if (inputs !== null) {
+            for (let key of Object.keys(inputs)) {
+                inputsString += "&" + key;
+                inputsString += "=" + inputs[key];
+            }
         }
+        console.log("requestString :");
         let requestString = "http://" + this.baseRequestURL + name + inputsString;
-
+        console.log(requestString);
         let response = await fetch(corsProxyURL + requestString, {mode: 'cors'});
         let text = await response.text();
-
         let jsonString = text.substring(11, text.length - 3);
         let json = JSON.parse(jsonString);
-
         return json;
     }
 
@@ -89,6 +87,31 @@ class PBWorks {
         let json = await this.operation("PutPage", inputs);
         return json['success'];
     }
+
+    async getAllPages(): Promise<object> {
+        let pageInfoArray: PageInfo[] = [];
+        let json = await this.operation("GetCurrentPages", null);
+        let pages = json['pages'];
+
+        for (let pageName of Object.keys(pages)) {
+            pageInfoArray.push({
+                name: pageName,
+                oid: pages[pageName]
+            });
+        }
+        return pageInfoArray;
+    }
+
+    async createPage(
+        inputs: {
+            page: string,
+            html: string
+        }
+    ): Promise<object> {
+        let json = await this.operation("CreatePage", inputs);
+        return json["success"];
+    }
+
 }
 
 // let pbworks = new PBWorks(workspaceName, adminKey);

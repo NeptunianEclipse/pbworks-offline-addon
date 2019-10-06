@@ -1,18 +1,14 @@
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 const basePBWorksURL = "pbworks.com";
 const corsProxyURL = "https://cors-anywhere.herokuapp.com/";
-// interface PageInfo {
-//     name: string;
-//     oid: number;
-//     html: string;
-// }
 class PBWorks {
     constructor(workspaceName, adminKey) {
         this.workspaceName = workspaceName;
@@ -22,12 +18,14 @@ class PBWorks {
     operation(name, inputs) {
         return __awaiter(this, void 0, void 0, function* () {
             let inputsString = `&admin_key=${this.adminKey}`;
-            for (let key of Object.keys(inputs)) {
-                inputsString += "&" + key;
-                inputsString += "=" + inputs[key];
+            if (inputs !== null) {
+                for (let key of Object.keys(inputs)) {
+                    inputsString += "&" + key;
+                    inputsString += "=" + inputs[key];
+                }
             }
-            let requestString = "http://" + this.baseRequestURL + name + inputsString;
             console.log("requestString :");
+            let requestString = "http://" + this.baseRequestURL + name + inputsString;
             console.log(requestString);
             let response = yield fetch(corsProxyURL + requestString, { mode: 'cors' });
             let text = yield response.text();
@@ -67,7 +65,28 @@ class PBWorks {
             return json['success'];
         });
     }
+    getAllPages() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let pageInfoArray = [];
+            let json = yield this.operation("GetCurrentPages", null);
+            let pages = json['pages'];
+            for (let pageName of Object.keys(pages)) {
+                pageInfoArray.push({
+                    name: pageName,
+                    oid: pages[pageName]
+                });
+            }
+            return pageInfoArray;
+        });
+    }
+    createPage(inputs) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let json = yield this.operation("CreatePage", inputs);
+            return json["success"];
+        });
+    }
 }
+
 // let pbworks = new PBWorks(workspaceName, adminKey);
 //
 // pbworks.getPage({
