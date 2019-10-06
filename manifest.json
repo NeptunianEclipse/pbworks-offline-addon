@@ -4,7 +4,7 @@
   "version": "1.0",
   "description": "Enables limited offline usage of PBWorks.",
   "icons": {
-    "400": "assets/img/pb_400x400.png"
+    "96": "assets/img/jamLogo.png"
   },
   "permissions": [
     "<all_urls>",
@@ -27,7 +27,7 @@
   "browser_action": {
     "browser_style": true,
     "default_icon": {
-      "32": "assets/img/pb_400x400.png"
+      "96": "assets/img/jamLogo.png"
     },
     "default_popup": "popup/Index.html"
 

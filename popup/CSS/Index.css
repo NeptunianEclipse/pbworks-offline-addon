@@ -8,10 +8,26 @@ html, body {
     display: none;
 }
 
+#jamPic {
+    display:inline-block;
+    width:200px;
+    margin-right:40px;
+
+}
+
+p {
+    margin-left:auto;
+    margin-right:auto;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 14px;
+}
+
 #addon_title {
-    font-size: 18px;
+    font-family: 'Gill Sans MT';
+    font-size: 24px;
     font-weight: bold;
     text-align: center;
+    display:inline-block;
 }
 
 #internet_status_outside {
@@ -22,6 +38,7 @@ html, body {
 #internet_status {
     font-size: 1.2em;
     text-align: center;
+    /*margin-top: -10px;*/
 }
 
 #popup-content {

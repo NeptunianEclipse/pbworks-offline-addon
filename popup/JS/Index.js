@@ -12,11 +12,11 @@ function Online(callback) {
 Online(function (flag) {
     let internet_status_dom = $('#internet_status');
     if (flag) {
-        let css = {"font-size": "1.2em", "color": "blue", "text-align": "center"};
+        let css = { "font-size": "1.2em", "color": "#009933", "text-align": "center"};
         internet_status_dom.text("Online");
         internet_status_dom.css(css);
     } else {
-        let css = {"font-size": "1.2em", "color": "blue", "text-align": "center"};
+        let css = { "font-size": "1.2em", "color": "#ff3300", "text-align": "center"};
         internet_status_dom.text("Offline");
         internet_status_dom.css(css);
     }
