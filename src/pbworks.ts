@@ -114,7 +114,6 @@ export default class PBWorks {
                 oid: pages[pageName]
             });
         }
-
         return pageInfoArray;
     }
 }

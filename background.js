@@ -9,6 +9,11 @@ browser.contextMenus.create({
     title: "Download PBwork article"
 });
 
+browser.contextMenus.create({
+    id: "PBwork-download all",
+
+})
+
 // promise reject callback function
 function onError(error) {
     console.log(`Error: ${error}`);
@@ -150,6 +155,7 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
             runDownload(tabs[0]);
         }, onError);
     }
+
 });
 
 
