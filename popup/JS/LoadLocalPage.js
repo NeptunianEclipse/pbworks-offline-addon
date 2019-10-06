@@ -3,6 +3,7 @@ var searchResult;
 
 $(document).ready(function () {
     setHomepage();
+    setIcons();
 
 
     $("#searchOid").click(function (event) {
@@ -180,7 +181,75 @@ $(document).ready(function () {
         $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + editEntry + viewEntry + "</div>");
     }
 
+    function setIcons() {
+       
+        document.getElementById("hoverJam").style.display = "none";
 
+        /*Logo changes on hover*/
+        $("#leftHeader").hover(function () {
+            $("#mainJam").hide();
+            $("#hoverJam").show();
+            document.body.style.cursor = 'pointer';
+        }, function () {
+            $("#mainJam").show();
+            $("#hoverJam").hide();
+            document.body.style.cursor = 'default';
+            })
+
+        /*'Create page' changes on hover*/
+        $("#createNewPage").hover(function () {
+            $("#createNewPage").width(80)
+            document.body.style.cursor = 'pointer';
+        }, function () {
+            $("#createNewPage").width(75)
+            document.body.style.cursor = 'default';
+        })
+
+        document.getElementById("createNewPage").onclick = function () {
+            /*Create new page not yet implemented!*/
+            alert("Create new page function not yet implemented");
+        }
+
+        var searchCheck = document.getElementById('searchDisplayButton');
+        if (typeof (searchCheck) != 'undefined' && searchCheck != null) {
+            document.getElementById("searchDiv").style.display = "none";
+            document.getElementById("hoverSearchImg").style.display = "none";
+            
+
+            $("#searchDisplayButton").hover(function () {
+                $("#mainSearchImg").hide();
+                $("#hoverSearchImg").show();
+                document.body.style.cursor = 'pointer';
+            }, function () {
+                $("#mainSearchImg").show();
+                $("#hoverSearchImg").hide();
+                document.body.style.cursor = 'default';
+            })
+
+            document.getElementById("hoverSearchImg").onclick = function () {
+                document.getElementById("searchDiv").style.display = "inline-block";
+                document.getElementById("searchDisplayButton").style.display = "none";
+            }
+        }
+
+        var editorCheck = document.getElementById('homeDisplayButton');
+        if (typeof (editorCheck) != 'undefined' && editorCheck != null) {
+            document.getElementById("hoverHome").style.display = "none";
+
+
+            $("#homeDisplayButton").hover(function () {
+                $("#mainHome").hide();
+                $("#hoverHome").show();
+                document.body.style.cursor = 'pointer';
+            }, function () {
+                $("#mainHome").show();
+                $("#hoverHome").hide();
+                document.body.style.cursor = 'default';
+            })
+        }
+
+
+    }
 
     function noHomepage() {
         $("#currentPage").html("<h2>You haven't downloaded a frontpage!</h2>");
