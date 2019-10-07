@@ -4,6 +4,28 @@ var searchResult;
 $(document).ready(function () {
     setHomepage();
     setIcons();
+  
+    Online(function (flag) {
+        
+        if (flag) {
+            //online
+            $("#internetStatus").text("Online");
+            $("#internetStatus").css("color", "#42ff4f");
+            
+        } else {
+            //offline
+            $("#internetStatus").text("Offline");
+            $("#internetStatus").css("color", "#ff5d47");
+        }
+    });
+
+    document.getElementById("searchBy").onkeypress = function (event) {
+        if (event.keyCode === 13 || event.which ==13) {
+            event.preventDefault();
+            document.getElementById("searchByWhat").click();
+        }
+    }
+
 
 
     $("#searchOid").click(function (event) {
@@ -94,10 +116,16 @@ $(document).ready(function () {
     function createSearchResults() {
         $('.editLink').remove();
         $('.backB').remove();
+        //There is a strange error causing multiple of the above buttons to appear
+        //refactoring may solve this in the future, but this works too
+
         var search = document.getElementById("searchBy").value;
         $("#localPage").text("Search for '" + search + "' returns: ");
         if (searchResult === 0 || searchResult === undefined) {
-                $("#currentPage").text("No pages found!");
+            //below not working due to changes in the IndexedDb
+            $("#currentPage").text("No pages found!");
+
+        
         }
         else {
                 $("#currentPage").empty();
@@ -249,6 +277,18 @@ $(document).ready(function () {
         }
 
 
+    }
+
+
+    function Online(callback) {
+        let img = new Image();
+        img.src = 'https://www.baidu.com/favicon.ico?_t=' + Date.now(); //will change to google
+        img.onload = function () {
+            if (callback) callback(true)
+        };
+        img.onerror = function () {
+            if (callback) callback(false)
+        };
     }
 
     function noHomepage() {
