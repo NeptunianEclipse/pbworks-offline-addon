@@ -1,10 +1,15 @@
 function saveOptions(e) {
     e.preventDefault();
     let key = document.querySelector("#key").value;
-    let name = document.querySelector("#name").value;
+    let name = document.querySelector("#email").value;
     browser.storage.local.set({
         pbwork_key: key,
-        pbwork_user_name: name
+        pbwork_user_email: name
+    }).then(r => {
+        browser.runtime.sendMessage({
+            message: "configuration update"
+        }).then(()=>{
+            console.log("users configuration update")});
     });
     document.querySelector("#admin_key").innerHTML = key;
     document.querySelector("#user_name").innerHTML = name;

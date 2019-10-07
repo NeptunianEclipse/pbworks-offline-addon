@@ -4,7 +4,6 @@ function handleError(error) {
 
 
 function handleMessage(request, sender, sendResponse) {
-    console.log(request);
     if (request.response === true) {
         alert("This page has been stored in database!");
 

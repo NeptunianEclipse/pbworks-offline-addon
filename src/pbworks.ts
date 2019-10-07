@@ -96,11 +96,13 @@ class PBWorks {
      * Updates the specified page on PBWorks with the specified HTML content
      * @param page - the name of the page
      * @param html - the HTML content to save under the page
+     * @param author - the author's uid in pbwork
      * @param createIfMissing - if true, then a page will be created if it doesn't already exist
      */
-    async putPageContent(page: string, html: string, createIfMissing: boolean = true): Promise<boolean> {
+    async putPageContent(page: string, html: string, author: string, createIfMissing: boolean = true): Promise<boolean> {
         let json = await this.operationGet("PutPage", new Map(Object.entries({
             page: page,
+            uid: author,
             create_if_missing: createIfMissing,
             html: encodeURIComponent(html)
         })));
@@ -122,6 +124,16 @@ class PBWorks {
             });
         }
         return pageInfoArray;
+    }
+
+    /**
+     *
+     * @param email user's email
+     */
+    async getUserInfo(email:string): Promise<object>{
+        return await this.operationGet("GetUserInfo", new Map(Object.entries({
+            email: email
+        })));
     }
 }
 

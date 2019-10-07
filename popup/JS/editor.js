@@ -40,6 +40,7 @@ function sendUploadObjectToBackground(object) {
     let gettingCurrent = browser.tabs.getCurrent();
     gettingCurrent.then((tabInfo) => {
         let sending = browser.runtime.sendMessage({
+            message: "ask for uploading",
             data: page,
             tab_id: tabInfo.id
         });

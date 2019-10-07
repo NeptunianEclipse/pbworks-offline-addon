@@ -36,7 +36,23 @@ document.addEventListener("click", function (e) {
         });
     }
 
-
 });
+
+function handleMessage(request, sender, sendResponse){
+    if (request.message === "config status return"){
+        if (request.status === true){
+            let node = $("#config_status");
+            let css = { "font-size": "1.2em", "color": "#009933", "text-align": "center"};
+            node.text("You have set user configuration");
+            node.css(css);
+        }
+    }
+}
+
+browser.runtime.sendMessage({
+    message: "ask for config status"
+});
+
+browser.runtime.onMessage.addListener(handleMessage);
 
 
