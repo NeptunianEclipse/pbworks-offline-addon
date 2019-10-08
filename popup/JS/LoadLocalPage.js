@@ -86,7 +86,12 @@ $(document).ready(function () {
     function searchByOid(event) {
         var search = document.getElementById("searchBy").value;
         search = parseInt(search);
-        $("#localPage").text("Search oid for '" + search + "' returns: ");
+        if (isNaN(search) === false) {
+            $("#localPage").text("Search oid for '" + search + "' returns: ");
+        }
+        else{
+            $("#localPage").text("Please enter a number!")
+        }
         var result = get_data_oid(search);
         result.then((e) => {
             console.log(e.target.result);
@@ -97,7 +102,12 @@ $(document).ready(function () {
 
     function searchByName(event) {
         var search = document.getElementById("searchBy").value;
-        $("#localPage").text("Search name for '" + search + "' returns: ");
+        if (search !== "") {
+            $("#localPage").text("Search name for '" + search + "' returns: ");
+        }
+        else{
+            $("#localPage").text("Can't be empty!")
+        }
         var result = get_data_name(search);
         result.then((e) => {
             console.log(e.target.result);
@@ -108,13 +118,15 @@ $(document).ready(function () {
             }
             else {
                 $("#currentPage").empty();
-                for (i = 0; i < searchResult.length; i++) {
-                    var p = searchResult[i];
-                    if (p.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || search.toLowerCase().indexOf(p.name.toLowerCase()) !== -1) {
-                        displaySearch(p, i);
+                if (search !== "") {
+                    for (i = 0; i < searchResult.length; i++) {
+                        var p = searchResult[i];
+                        if (p.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || search.toLowerCase().indexOf(p.name.toLowerCase()) !== -1) {
+                            displaySearch(p, i);
 
+                        }
+                        createButtonListeners();
                     }
-                    createButtonListeners();
                 }
             }
         });
@@ -122,7 +134,12 @@ $(document).ready(function () {
 
     function searchByAuthor(event) {
         var search = document.getElementById("searchBy").value;
-        $("#localPage").text("Search author for '" + search + "' returns: ");
+        if (search !== "") {
+            $("#localPage").text("Search author for '" + search + "' returns: ");
+        }
+        else{
+            $("#localPage").text("Can't be empty!")
+        }
         var result = get_data_author(search);
         result.then((e) => {
             console.log(e.target.result);
@@ -132,20 +149,6 @@ $(document).ready(function () {
         });
     }
 
-
-
-    function searchFor(search) {
-        $("#localPage").text("Search for '" + search + "' returns: ");
-        var result = get_data_name(search);
-        result.then((e) => {
-            console.log(e.target.result);
-            searchResult = [];
-            searchResult = e.target.result;
-            createSearchResults();
-        });
-    }
-
-
     function createSearchResults() {
         $('.editLink').remove();
         $('.backB').remove();
@@ -154,11 +157,13 @@ $(document).ready(function () {
         //refactoring may solve this in the future, but this works too
         resultCount = 0;
         var search = document.getElementById("searchBy").value;
+
         $("#localPage").text("Search for '" + search + "' returns: ");
         alert("two!");
-        if (searchResult === 0 || searchResult === undefined) {
+        if (searchResult.length === 0 || searchResult.length === undefined) {
             $("#currentPage").text("No pages found!"); //not working due to changes in the IndexedDb
             alert("three!");
+
         }
         else {
             alert("four!");
