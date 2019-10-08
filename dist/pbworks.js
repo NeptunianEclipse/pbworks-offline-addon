@@ -98,11 +98,10 @@ class PBWorks {
      * @param author - the author's uid in pbwork
      * @param createIfMissing - if true, then a page will be created if it doesn't already exist
      */
-    putPageContent(page, html, author, createIfMissing = true) {
+    putPageContent(page, html, createIfMissing = true) {
         return __awaiter(this, void 0, void 0, function* () {
             let json = yield this.operationGet("PutPage", new Map(Object.entries({
                 page: page,
-                uid: author,
                 create_if_missing: createIfMissing,
                 html: encodeURIComponent(html)
             })));
