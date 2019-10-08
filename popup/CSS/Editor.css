@@ -1,0 +1,38 @@
+﻿#editorPage {
+    width: 95%;
+    overflow: scroll;
+    background-color: white;
+    position: relative;
+    margin: auto;
+    padding: 15px;
+}
+
+#localFrame {
+    height:auto;
+    margin-top: 20px;
+}
+
+#localFrame p {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+#article_title{
+    margin-left:20px;
+    font-size: 20px;
+    display:inline-block;
+}
+
+.homeDisplayButton {
+    height: auto;
+    width: auto;
+}
+
+    .homeDisplayButton:hover {
+        background-color: white;
+    }
+
+#mainHome, #hoverHome {
+    width: 75px;
+    margin-top: 15px;
+}

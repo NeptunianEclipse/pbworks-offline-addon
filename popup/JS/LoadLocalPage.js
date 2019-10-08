@@ -1,5 +1,8 @@
 var searchResult;
-//this global variable simplifies the process of accessing pages in the search result, i.e. no weird handing around of strings
+
+//these global variables simplify the process of accessing pages in the search result, i.e. no weird handing around of strings
+
+
 
 $(document).ready(function () {
     setHomepage();
@@ -18,6 +21,33 @@ $(document).ready(function () {
             $("#internetStatus").css("color", "#ff5d47");
         }
     });
+
+
+
+    //Setting up the page on first load - populating with 'frontpage' object
+
+
+    function setHomepage() {
+        var result = get_data_name1("FrontPage");
+        result.then((e) => {
+            if (e.target.result.length === 0 || e.target.result.length === undefined) {
+                $("#currentPage").html("<h2>You haven't downloaded a frontpage!</h2>");
+            } else {
+                $("#currentPage").html(e.target.result[0].html);
+            }
+        });
+
+    }
+
+    //New Page Button
+    $("#createNewPage").click(function (event) {
+        let newPageName = prompt("Please input new page name:");
+        let editorUrl = "editor.html?";
+        editorUrl = editorUrl + 'oid' + "=" + "-1" + "&name" + "=" + newPageName;
+        toEditor(editorUrl);
+    });
+
+    //Search functions - button press listeners followed by functions
 
     document.getElementById("searchBy").onkeypress = function (event) {
         if (event.keyCode === 13 || event.which ==13) {
@@ -51,15 +81,7 @@ $(document).ready(function () {
         button.on("click", searchByAuthor);
     });
 
-
-
-    $("#createNewPage").click(function (event) {
-        let newPageName = prompt("Please input new page name:");
-        let editorUrl =  "editor.html?";
-        editorUrl = editorUrl + 'oid' + "=" + "-1" + "&name" + "=" + newPageName;
-        toEditor(editorUrl);
-    });
-
+    //Search functions - by type
 
     function searchByOid(event) {
         var search = document.getElementById("searchBy").value;
@@ -112,7 +134,7 @@ $(document).ready(function () {
 
 
 
-    function searchFor(search) { //search comes from button listeners above
+    function searchFor(search) {
         $("#localPage").text("Search for '" + search + "' returns: ");
         var result = get_data_name(search);
         result.then((e) => {
@@ -123,32 +145,79 @@ $(document).ready(function () {
         });
     }
 
+
     function createSearchResults() {
         $('.editLink').remove();
         $('.backB').remove();
-        //There is a strange error causing multiple of the above buttons to appear
+        alert("one!");
+        //There is a strange error causing multiple .editLink and .backB buttons to appear
         //refactoring may solve this in the future, but this works too
-
+        resultCount = 0;
         var search = document.getElementById("searchBy").value;
         $("#localPage").text("Search for '" + search + "' returns: ");
+        alert("two!");
         if (searchResult === 0 || searchResult === undefined) {
-            //below not working due to changes in the IndexedDb
-            $("#currentPage").text("No pages found!");
-
-        
+            $("#currentPage").text("No pages found!"); //not working due to changes in the IndexedDb
+            alert("three!");
         }
         else {
-                $("#currentPage").empty();
+            alert("four!");
+            $("#currentPage").empty(); 
+            $("#currentPage").append("<button id='previousSearchPages' style='display:none;'>Previous<button>");
+            $("#currentPage").append("<button id='nextSearchPages'>Next<button>");
                 for (i = 0; i < searchResult.length; i++) {
                     var p = searchResult[i];
                     displaySearch(p, i);
 
-                }
+            }
+
             createButtonListeners();
+            calculateShownPages();
             
-            
+
         }
     }
+
+    function calculateShownPages() {
+        var displayPerRotation = 5;
+
+        var extraPages = searchResult.length % displayPerRotation; //how many extra pages there are
+        var totalRotations
+        if (extraPages > 0) {
+            var j = searchResult.length - extraPages;
+            totalRotations = (j / displayPerRotation);
+            alert("extra!")
+        }
+        else {
+            totalRotations = (searchResult.length / e) - 1;
+            alert("normal!");
+        }; //the number of rotations is just however many lots of 20 there are
+
+        var resultCount = 0;
+        var nextResultsPage = false;
+        while (resultCount <= totalRotations) {
+            accessSearch(resultCount, displayPerRotation);
+            console.log("increment c")
+            resultCount++;
+        }
+    }
+
+    function accessSearch(count, shownPages) {
+        var loopNum;
+        var lower = count * shownPages;
+        var upper = lower + shownPages - 1;
+        if (searchResult.length <= upper) {
+            loopNum = searchResult.length;
+            alert("yes??");
+        }
+        else { loopNum = upper; alert("no??"); };
+
+        for (var p = lower; p < loopNum; p++) {
+
+            console.log(p);
+        }
+    }
+
 
     function createButtonListeners() {
         $('.editLink').remove();
@@ -218,6 +287,7 @@ $(document).ready(function () {
 
         $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + editEntry + viewEntry + "</div>");
     }
+
 
     function setIcons() {
 
@@ -301,23 +371,6 @@ $(document).ready(function () {
         };
     }
 
-    function noHomepage() {
-        $("#currentPage").html("<h2>You haven't downloaded a frontpage!</h2>");
-    }
-
-    function setHomepage() {
-        //Automatically populates the homepage with the PBWorks 'frontpage'; won't be hardcoded in future
-
-        var result = get_data_name1("FrontPage");
-        result.then((e) => {
-            if (e.target.result.length === 0 || e.target.result.length === undefined) {
-                noHomepage();
-            } else {
-                $("#currentPage").html(e.target.result[0].html);
-            }
-        });
-
-    }
     searchName.click();
 });
 
