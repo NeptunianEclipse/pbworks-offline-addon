@@ -94,15 +94,16 @@ class PBWorks {
     /**
      * Updates the specified page on PBWorks with the specified HTML content
      * @param page - the name of the page
+     * @param author the uid of author
      * @param html - the HTML content to save under the page
-     * @param author - the author's uid in pbwork
      * @param createIfMissing - if true, then a page will be created if it doesn't already exist
      */
-    putPageContent(page, html, createIfMissing = true) {
+    putPageContent(page, author, html, createIfMissing = true) {
         return __awaiter(this, void 0, void 0, function* () {
             let json = yield this.operationGet("PutPage", new Map(Object.entries({
                 page: page,
                 create_if_missing: createIfMissing,
+                uid: author,
                 html: encodeURIComponent(html)
             })));
             return json['success'];
