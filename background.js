@@ -1,7 +1,6 @@
 let admin_key;
-let workspace_name;
-let current_oid_num;
 let user_email;
+let user_workspace;
 let user_uid;
 let if_load_config = false;
 
@@ -12,10 +11,6 @@ browser.contextMenus.create({
     title: "Download this article"
 });
 
-// browser.contextMenus.create({
-//     id: "PBwork-download all",
-//     title: "Download All articles of this workspace"
-// });
 
 // promise reject callback function
 function onError(error) {
@@ -40,6 +35,10 @@ function get_user_config(item) {
         if (item.pbwork_user_email) {
             user_email = item.pbwork_user_email;
         }
+
+        if (item.pbwork_workspace) {
+            user_workspace = item.pbwork_workspace;
+        }
         resolve();
     });
 
@@ -50,15 +49,19 @@ function load_configuration() {
         open_local_storage()
             .then(get_user_config)
             .then(() => {
-                if_load_config = true;
-                resolve();
+                get_user_info(user_workspace, user_email)
+                    .then(r => {
+                        user_uid = r.uid;
+                        console.log(user_uid);
+                        if_load_config = true;
+                        resolve();
+                    });
             })
             .catch(reject);
     });
-
 }
 
-function get_user_info(email) {
+function get_user_info(workspace_name, email) {
     return new Promise(function (resolve, reject) {
         let pbworks = new PBWorks(workspace_name, admin_key);
         pbworks.getUserInfo(email)
@@ -67,7 +70,7 @@ function get_user_info(email) {
 }
 
 
-function download_page() {
+function download_page(workspace_name, current_oid_num) {
     return new Promise(function (resolve, reject) {
         let pbworks = new PBWorks(workspace_name, admin_key);
         pbworks.getPageContent(current_oid_num).then((pageInfo) => {
@@ -80,10 +83,10 @@ function download_page() {
 function upload_page(data) {
     return new Promise((resolve, reject) => {
         console.log("begin uploading..........");
-        console.log(data.revurl);
+        let workspace_name = new RegExp("http://(.+)\.pbworks.com/w/page/.*").exec(data.revurl)[1];
         let pbworks = new PBWorks(workspace_name, admin_key);
         console.log(user_uid);
-        pbworks.putPageContent(data.name, data.html)
+        pbworks.putPageContent(data.name, user_uid,data.html)
             .then(success => {
                 resolve(success);
                 console.log("upload finish......");
@@ -103,9 +106,24 @@ function runDownload(tab) {
     let pbwork_re = new RegExp("^.+\.pbworks.com/w/page/.*");
     let outcome = pbwork_re.test(url);
     if (outcome) {
+        let workspace_name;
+        let current_oid_num;
+        let return_flag = false;
         current_oid_num = new RegExp("^.+\.pbworks.com/w/page/([0-9]+)/").exec(url)[1];
         workspace_name = new RegExp("http://(.+)\.pbworks.com/w/page/.*").exec(url)[1];
-        download_page()
+        if (workspace_name !== user_workspace) {
+            return_flag = true;
+            browser.tabs.sendMessage(tab.id, {
+                response: false,
+                type: "Target Website is Invalid",
+                message: "This website is not belong to your Workspace!"
+            });
+        }
+
+        if(return_flag)
+            return -1;
+
+        download_page(workspace_name, current_oid_num)
             .then(function (pageInfo) {
                 if (typeof pageInfo.html === "undefined") {
                     console.log("download failed!");
@@ -205,7 +223,7 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
         let querying = browser.tabs.query({currentWindow: true, active: true});
         querying.then(function (tabs) {
             if (!if_load_config) {
-                browser.tabs.sendMessage(tabs[0].id,{
+                browser.tabs.sendMessage(tabs[0].id, {
                     response: false,
                     type: "Extension configuration",
                     message: "You haven't set configuration yet"

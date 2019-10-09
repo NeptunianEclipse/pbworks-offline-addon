@@ -8,14 +8,16 @@
 <body>
 
 <form>
-    <label>Admin Key<input type="password" id="key" ></label>
+    <label>Admin Key<input type="password" id="key" required="required" ></label>
     <br>
-    <label>User Email<input id="email" type="email"></label>
+    <label>User Email<input id="email" type="email" required="required"></label>
     <br/>
+    <label>User Workspace Name<input id="workspace" required="required"></label>
     <button type="submit">Save</button>
     <hr/>
     <p>Current Admin Key: <span id="admin_key"></span></p>
     <p>Current User uid: <span id="user_name"></span></p>
+    <p>Current User Workspace: <span id="user_workspace"></span></p>
 </form>
 
 <script src="options.js"></script>
