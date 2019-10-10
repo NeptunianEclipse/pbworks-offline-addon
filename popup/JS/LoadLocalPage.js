@@ -135,17 +135,17 @@ $(document).ready(function () {
         search = parseInt(search);
         if (isNaN(search) === false) {
             $("#localPage").text("Search oid for '" + search + "' returns: ");
+            var result = get_data_oid(search);
             result.then((e) => {
                 console.log(e.target.result);
-                searchResult = [];
-                searchResult = e.target.result;
+                searchResult = [e.target.result];
                 createSearchResults();
             });
         }
         else{
             $("#localPage").text("Please enter a number!")
         }
-        var result = get_data_oid(search);
+
         
     }
 
