@@ -3,7 +3,7 @@
   "name": "PBWorks Offline Add-on",
   "version": "1.0",
   "description": "Enables limited offline usage of PBWorks.",
-  "icon": {
+  "icons": {
     "96": "assets/img/jamLogo.png"
   },
   "permissions": [
