@@ -452,7 +452,7 @@ $(document).ready(function () {
             if (callback) callback(false)
         };
     }
-    
+    searchName.click();
 });
 
 
