@@ -5,10 +5,10 @@ function handleError(error) {
 function handleResponse(message) {
     console.log(message);
     if (message.response === false) {
-        alert("upload fail");
+        alert("Upload failed");
     }
     if (message.response === true) {
-        alert("upload successfully");
+        alert("Upload successful");
     }
 
 }
@@ -27,12 +27,12 @@ function GetQueryString(name) {
 function saveLocal(object) {
     object.mtime = new Date().getTime();
     upgrade_data(object)
-    .then(event => {
+        .then(event => {
             alert("Page: " + object.name + " has been save in local!");
         }).catch(event => {
-            alert("fail")
-        })
-    }
+        alert("Error occured: Page has not saved.")
+    })
+}
 
 
     function sendUploadObjectToBackground(object) {
@@ -64,7 +64,7 @@ browser.runtime.onMessage.addListener(request => {
         }
     }
     if (request.response === false) {
-        alert("Upload fail because some reason")
+        alert("Error occured: upload failed")
     }
     return Promise.resolve({response: "editor.js get it"});
 });
@@ -124,6 +124,11 @@ $('#button_save').click(function () {
  * upload function will be called here
  */
 $('#button_update').click(function () {
+    Online(function (flag) {
+        if (!flag) {
+            alert("You are currently not connected, please try again later");
+        }
+    })
     editor.sync();
     let new_context = $('#editor_id').val();
     if (oid === -1) {

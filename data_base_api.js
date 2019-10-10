@@ -34,10 +34,13 @@
 
 let DB_NAME = 'pbwork_extension';
 let OBJ_SPACE_NAME = 'page_list';
+let VERSION_STORE_NAME = 'version_control';
 let DB_VERSION = 1.0;
 let my_db;
 let INDEX_STORAGE_NAME = 'index_name';
 let INDEX_STORAGE_AUTHOR = 'index_author';
+let INDEX_OID = 'index_oid';
+
 
 /**
  * initialize database
@@ -66,8 +69,11 @@ function init_database() {
                 my_db = event.target.result; //get a instance of database.
                 if (!my_db.objectStoreNames.contains(OBJ_SPACE_NAME)) {
                     let object_store = my_db.createObjectStore(OBJ_SPACE_NAME, {keyPath: "oid"});
+                    let version_store = my_db.createObjectStore(VERSION_STORE_NAME, {autoIncrement: true});
                     object_store.createIndex(INDEX_STORAGE_NAME, 'name', {unique: false});
                     object_store.createIndex(INDEX_STORAGE_AUTHOR, 'author.name', {unique: false});
+                    version_store.createIndex(INDEX_OID, 'oid', {unique: false});
+                    //version_store.createIndex(INDEX_VERSION, 'version', {unique: false});
                 }
             }
 
@@ -93,6 +99,14 @@ function open_storage(db_instance) {
     });
 }
 
+function open_version_store(db_instance) {
+    return new Promise((resolve, reject) => {
+        let transaction = db_instance.transaction([VERSION_STORE_NAME], 'readwrite');
+        let object_store = transaction.objectStore(VERSION_STORE_NAME);
+        console.log("open_storage");
+        resolve(object_store);
+    });
+}
 
 /**
  *  This is designed as a resolve function for open_storage()
@@ -112,6 +126,7 @@ function insert(data) {
         init_database()
             .then(open_storage)
             .then(object_storage => {
+                data.edittime = new Date().toLocaleTimeString();
                 let oid = data.oid;
                 let request = object_storage.get(oid);
                 request.onsuccess = function () {
@@ -128,6 +143,31 @@ function insert(data) {
     })
 }
 
+function getOid(oid) {
+    return new Promise((resolve, reject) => {
+        init_database()
+            .then(open_version_store)
+            .then(object_storage => {
+                let keyRange = IDBKeyRange.only(oid);
+                let getAllKeysRequest = object_storage.index(INDEX_OID).getAll(keyRange);
+                getAllKeysRequest.onsuccess = resolve;
+                getAllKeysRequest.onerror = reject;
+            })
+    })
+}
+
+
+function insert_version(data) {
+    return new Promise((resolve, reject) => {
+        init_database()
+            .then(open_version_store)
+            .then(object_storage => {
+                data.edittime = new Date().toLocaleTimeString();
+                object_storage.add(data);
+                resolve();
+            });
+    })
+}
 
 /**
  * get data from database according to oid
@@ -153,6 +193,7 @@ function get_data_oid(oid) {
     })
 }
 
+
 /**
  * get data from database according to name
  * once finish, a array which contain data will be passed to resolve function
@@ -160,6 +201,8 @@ function get_data_oid(oid) {
  * @param name
  * @returns {Promise<unknown>}
  */
+
+
 function get_data_name(name) {
     return new Promise((resolve, reject) => {
         init_database()

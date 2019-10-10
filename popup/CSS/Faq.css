@@ -1,0 +1,25 @@
+﻿#faqName {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 22px;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+#faq p {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.question{
+    display:inline-block;
+    font-weight:bold;
+}
+
+.answer {
+    margin-top:-10px;
+    display:inline-block;
+
+}
+
+#answerList, #answerList ul {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-top:-10px;
+}
