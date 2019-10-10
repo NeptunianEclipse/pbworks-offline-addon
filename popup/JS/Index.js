@@ -28,9 +28,7 @@ document.addEventListener("click", function (e) {
         return;
     }
     let url_view_modify = "Homepage.html";
-    if (e.target.textContent === "Download Pages") {
-        console.log("click!!!!!")
-    } else if (e.target.textContent === "View Local Pages") {
+    if (e.target.textContent === "View Local Pages") {
         browser.tabs.create({
             url: url_view_modify
         });
@@ -43,7 +41,7 @@ function handleMessage(request, sender, sendResponse){
         if (request.status === true){
             let node = $("#config_status");
             let css = { "font-size": "1.2em", "color": "#009933", "text-align": "center"};
-            node.text("You have set user configuration");
+            node.text("You have set your user configurations");
             node.css(css);
         }
     }
