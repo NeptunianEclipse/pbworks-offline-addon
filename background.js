@@ -136,6 +136,11 @@ function runDownload(tab) {
                             console.log("download success");
                         });
                     flag = true;
+                    insert_version(pageInfo)
+                        .then(() => {
+                            console.log("download success");
+                        });
+                    flag = true;
                 }
 
                 if (flag) {
