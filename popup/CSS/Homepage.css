@@ -155,7 +155,7 @@ p {
     padding-bottom: 5px;
 }
 
-#currentPage {
+#currentPage, #faq {
     width:95%;
     overflow:scroll;
     background-color: white;
@@ -222,6 +222,10 @@ p {
     margin-right:20px;
 }
 
+    #button_update:disabled {
+        opacity:0.5;
+    }
+
 
 
 
@@ -248,3 +252,12 @@ p {
         font-family: Verdana;
         font-size: 14px;
     }
+
+#helpLink {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+    margin: 0,auto;
+    text-align:center;
+    display:block;
+    padding-top:5px;
+}

@@ -38,7 +38,6 @@ p {
 #internet_status {
     font-size: 1.2em;
     text-align: center;
-    /*margin-top: -10px;*/
 }
 
 #popup-content {
@@ -65,6 +64,16 @@ Button {
     width: 90%;
     
 }
+
+#faqLink {
+    text-align: center;
+    color: #48b096;
+    text-decoration: underline;
+}
+
+    #faqLink:hover {
+        color: #6ad9bd;
+    }
 
 Button:hover {
     background: rgb(1,21,37);

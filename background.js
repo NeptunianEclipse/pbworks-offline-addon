@@ -116,7 +116,7 @@ function runDownload(tab) {
             browser.tabs.sendMessage(tab.id, {
                 response: false,
                 type: "Target Website is Invalid",
-                message: "This website is not belong to your Workspace!"
+                message: "This website does not belong to your Workspace!"
             });
         }
 

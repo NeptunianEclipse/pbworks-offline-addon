@@ -23,12 +23,15 @@ Online(function (flag) {
 });
 
 document.addEventListener("click", function (e) {
-    if (!(e.target.tagName === "BUTTON")) {
-        console.log(e.target.tagName);
-        return;
-    }
-    let url_view_modify = "Homepage.html";
+    var url_view_modify;
     if (e.target.textContent === "View Local Pages") {
+        url_view_modify = "Homepage.html";
+        browser.tabs.create({
+            url: url_view_modify
+        });
+    }
+    else if (e.target.textContent === "Help") {
+        url_view_modify = "faq.html";
         browser.tabs.create({
             url: url_view_modify
         });

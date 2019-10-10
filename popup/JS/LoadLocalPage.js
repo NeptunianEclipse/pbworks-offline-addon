@@ -21,6 +21,9 @@ $(document).ready(function () {
             //offline
             $("#internetStatus").text("Offline");
             $("#internetStatus").css("color", "#ff5d47");
+            if ($('#button_update').length) {
+                document.getElementById("button_update").disabled = true;
+            }
         }
     });
 
@@ -84,7 +87,8 @@ $(document).ready(function () {
     });
 
     document.getElementById("displayNumber").addEventListener("change", function (event) {
-        showPerLoad = $("#displayNumber :selected").val();
+        showPerLoad = parseInt($("#displayNumber :selected").val());
+        console.log(showPerLoad);
         if (searchResult) {
             createSearchResults();
         }
@@ -233,6 +237,7 @@ $(document).ready(function () {
         else { loopNum = upper; };
 
         limitsArray = [lower, loopNum];
+        console.log(limitsArray);
         return (limitsArray);
     }
 
