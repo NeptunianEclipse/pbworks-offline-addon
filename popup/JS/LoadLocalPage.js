@@ -114,17 +114,18 @@ $(document).ready(function () {
         if (isNaN(search) === false) {
             $("#localPage").text("Search oid for '" + search + "' returns: ");
 
-        var result = getOid(search);
-        result.then((e) => {
-            console.log(e.target.result);
-            searchResult = [];
-            searchResult = e.target.result;
-            createSearchResults();
+            var result = getOid(search);
+            result.then((e) => {
+                console.log(e.target.result);
+                searchResult = [];
+                searchResult = e.target.result;
+                createSearchResults();
+            });
         }
         else{
                 $("#localPage").text("Please enter a complete number!")
             }
-        });
+        
     }
 
 
