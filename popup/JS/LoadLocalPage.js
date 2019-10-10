@@ -67,7 +67,8 @@ $(document).ready(function () {
         let button = $("#searchByWhat");
         button.off("click", searchByAuthor);
         button.off("click", searchByName);
-        button.on("click", searchVersion);
+        button.off("click", searchVersion);
+        button.on("click", searchByOid);
     });
 
     let searchName = $("#searchName");
