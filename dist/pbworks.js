@@ -106,7 +106,7 @@ class PBWorks {
                 uid: author,
                 html: encodeURIComponent(html)
             })));
-            return json['success'];
+            return json;
         });
     }
     /**

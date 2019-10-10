@@ -55,6 +55,9 @@ $(document).ready(function () {
 
     $("#createNewPage").click(function (event) {
         let newPageName = prompt("Please input new page name:");
+        if (newPageName === "" || newPageName === null){
+            return;
+        }
         let editorUrl =  "editor.html?";
         editorUrl = editorUrl + 'oid' + "=" + "-1" + "&name" + "=" + newPageName;
         toEditor(editorUrl);
@@ -248,10 +251,6 @@ $(document).ready(function () {
             document.body.style.cursor = 'default';
         })
 
-        document.getElementById("createNewPage").onclick = function () {
-            /*Create new page not yet implemented!*/
-            alert("Create new page function not yet implemented");
-        }
 
         var searchCheck = document.getElementById('searchDisplayButton');
         if (typeof (searchCheck) != 'undefined' && searchCheck != null) {
@@ -325,5 +324,12 @@ $(document).ready(function () {
     }
     searchName.click();
 });
+
+
+let a  = new Promise(function (resolve, reject) {
+
+    resolve();
+});
+
 
 
