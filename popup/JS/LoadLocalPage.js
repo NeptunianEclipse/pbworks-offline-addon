@@ -64,7 +64,7 @@ $(document).ready(function () {
         let button = $("#searchByWhat");
         button.off("click", searchByAuthor);
         button.off("click", searchByName);
-        button.on("click", searchByOid);
+        button.on("click", searchVersion);
     });
 
     let searchName = $("#searchName");
@@ -72,6 +72,7 @@ $(document).ready(function () {
         let button = $("#searchByWhat");
         button.off("click", searchByAuthor);
         button.off("click", searchByOid);
+        button.off("click", searchVersion);
         button.on("click", searchByName);
     });
 
@@ -80,7 +81,16 @@ $(document).ready(function () {
         let button = $("#searchByWhat");
         button.off("click", searchByOid);
         button.off("click", searchByName);
+        button.off("click", searchVersion);
         button.on("click", searchByAuthor);
+    });
+
+    $("#searchVersion").click(function (event) {
+        let button = $("#searchByWhat");
+        button.off("click", searchByOid);
+        button.off("click", searchByName);
+        button.off("click", searchByAuthor);
+        button.on("click", searchVersion);
     });
 
     document.getElementById("displayNumber").addEventListener("change", function (event) {
@@ -93,6 +103,26 @@ $(document).ready(function () {
     });
 
     //Search functions - by type
+
+    function searchVersion(event) {
+        var search = document.getElementById("searchBy").value;
+        search = parseInt(search);
+        if (isNaN(search) === false) {
+            $("#localPage").text("Search oid for '" + search + "' returns: ");
+
+        var result = getOid(search);
+        result.then((e) => {
+            console.log(e.target.result);
+            searchResult = [];
+            searchResult = e.target.result;
+            createSearchResults();
+        }
+        else{
+                $("#localPage").text("Please enter a complete number!")
+            }
+        });
+    }
+
 
     function searchByOid(event) {
         var search = document.getElementById("searchBy").value;
@@ -331,10 +361,11 @@ $(document).ready(function () {
 
         var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a> </h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
         var stringEntry1 = "<br><p>OID: " + singlePage.oid + "</p>";
+        var editTime = "<p>last modify time: " + singlePage.edittime + "</p>"
         var viewEntry = "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>";
         var editEntry = '<a href=' + editor_url + ' class="editPage">Edit</a>';
 
-        $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + editEntry + viewEntry + "</div>");
+        $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + editTime + editEntry + viewEntry + "</div>");
     }
 
 
