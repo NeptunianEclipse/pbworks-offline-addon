@@ -39,7 +39,6 @@ $(document).ready(function () {
                 $("#currentPage").html("<h2>You haven't downloaded a frontpage!</h2>");
             } else {
                 $("#currentPage").html(e.target.result[0].html);
-                $('#currentPage p').after('<br />');
             }
         });
 
@@ -60,7 +59,7 @@ $(document).ready(function () {
             event.preventDefault();
             document.getElementById("searchByWhat").click();
         }
-    }
+    };
 
 
 
@@ -121,11 +120,17 @@ $(document).ready(function () {
                 console.log(e.target.result);
                 searchResult = [];
                 searchResult = e.target.result;
-                createSearchResults();
+                if (searchResult.length === 0){
+                    $("#currentPage").text("No pages found!");
+                }
+                else {
+                    createSearchResults();
+                }
             });
         }
         else{
-                $("#localPage").text("Please enter a complete number!")
+            $("#currentPage").empty();
+            $("#localPage").text("Please enter a complete number!")
             }
 
     }
@@ -139,11 +144,17 @@ $(document).ready(function () {
             var result = get_data_oid(search);
             result.then((e) => {
                 console.log(e.target.result);
-                searchResult = [e.target.result];
-                createSearchResults();
+                if (e.target.result === undefined){
+                    $("#currentPage").text("No pages found!");
+                }
+                else {
+                    searchResult = [e.target.result];
+                    createSearchResults();
+                }
             });
         }
         else{
+            $("#currentPage").empty();
             $("#localPage").text("Please enter a number!")
         }
 
@@ -159,6 +170,7 @@ $(document).ready(function () {
                 console.log(e.target.result);
                 searchResult = [];
                 var searchResultTemp = e.target.result;
+                console.log(searchResultTemp);
                 if (searchResultTemp.length === 0 || searchResultTemp.length === undefined) {
                     $("#currentPage").text("No pages found!");
                 }
@@ -171,12 +183,18 @@ $(document).ready(function () {
                                 searchResult.push(p);
                             }
                         }
-                        createSearchResults();
+                        if (searchResult.length === 0){
+                            $("#currentPage").text("No pages found!");
+                        }
+                        else {
+                            createSearchResults();
+                        }
                     }
                 }
             });
         }
         else{
+            $("#currentPage").empty();
             $("#localPage").text("Can't be empty!")
         }
 
@@ -191,10 +209,17 @@ $(document).ready(function () {
                 console.log(e.target.result);
                 searchResult = [];
                 searchResult = e.target.result;
-                createSearchResults();
+                if (searchResult.length === 0){
+                    $("#currentPage").text("No pages found!");
+                }
+                else {
+
+                    createSearchResults();
+                }
             });
         }
         else{
+            $("#currentPage").empty();
             $("#localPage").text("Can't be empty!")
         }
 
@@ -209,23 +234,16 @@ $(document).ready(function () {
         $("#displayNumberForm").css({
             "display": "inline-block","float": "right","margin-top": "2%","margin-right": "2%",});
         var search = document.getElementById("searchBy").value;
-
-        $("#localPage").text("Search for '" + search + "' returns: ");
-        if (searchResult.length === 0 || searchResult.length === undefined) {
-            $("#currentPage").text("No pages found!"); //not working due to changes in the IndexedDb
-
+        var basicResultString = "Search for '" + search + "' returns " + searchResult.length + " result";
+        if (searchResult.length !== 1) {
+            var resultString = basicResultString.concat("s");
+            $("#localPage").text(resultString);
         }
         else {
-            var basicResultString = "Search for '" + search + "' returns " + searchResult.length + " result";
-            if (searchResult.length !== 1) {
-                var resultString = basicResultString.concat("s");
-                $("#localPage").text(resultString);
-            }
-            else {
-                $("#localPage").text(basicResultString);
-            }
+            $("#localPage").text(basicResultString);
+        }
 
-}
+
 
             $("#currentPage").empty();
 
@@ -245,7 +263,7 @@ $(document).ready(function () {
 
     function calculateShownPages() {
         var extraPages = searchResult.length % showPerLoad; //how many extra pages there are
-        var totalRotations
+        var totalRotations;
         if (extraPages > 0) {
             var j = searchResult.length - extraPages;
             totalRotations = (j / showPerLoad) + 1;
@@ -254,7 +272,7 @@ $(document).ready(function () {
         else {
             totalRotations = (searchResult.length / showPerLoad);
 
-        }; //the number of total rotations is just however many lots of 5 there are (always rounded up, e.g. 11 = 3 rotations), for now
+        } //the number of total rotations is just however many lots of 5 there are (always rounded up, e.g. 11 = 3 rotations), for now
         return totalRotations;
 
 
@@ -267,7 +285,7 @@ $(document).ready(function () {
         if (searchResult.length <= upper) {
             loopNum = searchResult.length;
         }
-        else { loopNum = upper; };
+        else { loopNum = upper; }
 
         limitsArray = [lower, loopNum];
         console.log(limitsArray);
@@ -309,7 +327,7 @@ $(document).ready(function () {
             searchNavCalculations();
             createButtonListeners();
 
-        })
+        });
         $(".previousSearchPages").click(function () {
             searchNavCount--;
             searchNavCalculations();
@@ -327,7 +345,6 @@ $(document).ready(function () {
                 c_page.empty();
                 $("#localPage").text(searchResult[vbnInt].name);
                 c_page.html(actualPage);
-                $('#currentPage p').after('<br />');
                 $("#displayNumberForm").css("display", "none");
                 //can't figure out why multiple buttons are made, so this checks if any back buttons exist before adding them
                 var allBackB = document.getElementsByClassName("backB");
@@ -370,7 +387,7 @@ $(document).ready(function () {
 
         var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a> </h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
         var stringEntry1 = "<br><p>OID: " + singlePage.oid + "</p>";
-        var editTime = "<p>Last Modified: " + singlePage.edittime + "</p>"
+        var editTime = "<p>last modify time: " + singlePage.edittime + "</p>"
         var viewEntry = "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>";
         var editEntry = '<a href=' + editor_url + ' class="editPage">Edit</a>';
 
