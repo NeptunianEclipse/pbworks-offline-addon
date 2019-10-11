@@ -39,6 +39,7 @@ $(document).ready(function () {
                 $("#currentPage").html("<h2>You haven't downloaded a frontpage!</h2>");
             } else {
                 $("#currentPage").html(e.target.result[0].html);
+                $('#currentPage p').after('<br />');
             }
         });
 
@@ -326,6 +327,7 @@ $(document).ready(function () {
                 c_page.empty();
                 $("#localPage").text(searchResult[vbnInt].name);
                 c_page.html(actualPage);
+                $('#currentPage p').after('<br />');
                 $("#displayNumberForm").css("display", "none");
                 //can't figure out why multiple buttons are made, so this checks if any back buttons exist before adding them
                 var allBackB = document.getElementsByClassName("backB");
