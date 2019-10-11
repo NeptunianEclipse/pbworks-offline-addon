@@ -66,7 +66,7 @@ function init_database() {
                 reject("fail,error code：" + event.target.errorCode);
             };
             request.onupgradeneeded = function (event) {
-                my_db = event.target.result;//获得数据库实例对象
+                my_db = event.target.result; //get a instance of database.
                 if (!my_db.objectStoreNames.contains(OBJ_SPACE_NAME)) {
                     let object_store = my_db.createObjectStore(OBJ_SPACE_NAME, {keyPath: "oid"});
                     let version_store = my_db.createObjectStore(VERSION_STORE_NAME, {autoIncrement: true});

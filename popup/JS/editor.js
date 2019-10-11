@@ -35,13 +35,13 @@ function saveLocal(object) {
 }
 
 
-function sendUploadObjectToBackground(object) {
-    // get tab id
-    let gettingCurrent = browser.tabs.getCurrent();
-    gettingCurrent.then((tabInfo) => {
+    function sendUploadObjectToBackground(object) {
+        // get tab id
+        let gettingCurrent = browser.tabs.getCurrent();
+        gettingCurrent.then((tabInfo) => {
         let sending = browser.runtime.sendMessage({
             message: "ask for uploading",
-            data: page,
+            data: object,
             tab_id: tabInfo.id
         });
         sending.then(null, handleError);
@@ -57,7 +57,11 @@ browser.runtime.onMessage.addListener(request => {
     console.log("Message from the background script:");
     console.log(request);
     if (request.response === true) {
-        alert("Upload successful")
+        if(request.new_page){
+            alert("New page have created in PBwork website!")
+        }else {
+            alert("Upload successfully")
+        }
     }
     if (request.response === false) {
         alert("Error occured: upload failed")
@@ -79,6 +83,7 @@ KindEditor.ready(function (K) {
 let page;
 let oid = GetQueryString('oid');
 let newPageName;
+let new_oid = -Date.parse(new Date());
 oid = parseInt(oid); // note that data type of key primary
 if (oid === -1) {
     newPageName = GetQueryString('name');
@@ -96,10 +101,22 @@ if (oid === -1) {
 $('#button_save').click(function () {
     editor.sync();
     let new_context = $('#editor_id').val();
-    console.log("begin save............");
-    page.html = new_context;
-    saveLocal(page);
-    // local data base API here to save change in local
+    if (oid===-1){
+        let page = {};
+        page.name = newPageName;
+        page.html = new_context;
+        page.oid = new_oid;
+        insert(page).then(e=>{
+            alert("Page: " + page.name + " has been save in local!");
+        }).catch(e=>{
+            alert("fail");
+        })
+    }else{
+        console.log("begin save............");
+        page.html = new_context;
+        saveLocal(page);
+    }
+
 });
 
 
@@ -114,12 +131,20 @@ $('#button_update').click(function () {
     })
     editor.sync();
     let new_context = $('#editor_id').val();
-    page.html = new_context;
-    if (oid !== -1) {
-        saveLocal(page);
+    if (oid === -1) {
+        let page = {};
+        page.name = newPageName;
+        page.html = new_context;
+        page.oid = new_oid;
+        insert(page).then(e=>{
+            alert("Page: " + page.name + " has been save in local!");
+        }).catch(e=>{
+            alert("fail");
+        });
         sendUploadObjectToBackground(page);
     }else{
-
+        saveLocal(page);
+        sendUploadObjectToBackground(page);
     }
 
 });

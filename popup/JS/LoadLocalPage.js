@@ -9,7 +9,7 @@ $(document).ready(function () {
     setHomepage();
     setIcons();
     $("#displayNumberForm").css("display", "none");
-  
+
     Online(function (flag) {
         
         if (flag) {
@@ -103,7 +103,7 @@ $(document).ready(function () {
         if (searchResult) {
             createSearchResults();
         }
-        
+
 
     });
 
@@ -126,7 +126,7 @@ $(document).ready(function () {
         else{
                 $("#localPage").text("Please enter a complete number!")
             }
-        
+
     }
 
 
@@ -146,7 +146,7 @@ $(document).ready(function () {
             $("#localPage").text("Please enter a number!")
         }
 
-        
+
     }
 
     function searchByName(event) {
@@ -178,7 +178,7 @@ $(document).ready(function () {
         else{
             $("#localPage").text("Can't be empty!")
         }
-        
+
     }
 
     function searchByAuthor(event) {
@@ -196,7 +196,7 @@ $(document).ready(function () {
         else{
             $("#localPage").text("Can't be empty!")
         }
-        
+
     }
 
     function createSearchResults() {
@@ -223,20 +223,20 @@ $(document).ready(function () {
             else {
                 $("#localPage").text(basicResultString);
             }
-                
+
 }
-            
+
             $("#currentPage").empty();
-            
+
             console.log('results length = ' + searchResult.length);
             searchNavCalculations();
             createButtonListeners();
 
         }
-  
+
 
     function searchNavCalculations() {
-        
+
         var totalRotations = calculateShownPages();
         var limitsArray = calculateSearchLimits();
         displayLimitedSearches(totalRotations, limitsArray[0], limitsArray[1]);
@@ -252,11 +252,11 @@ $(document).ready(function () {
         }
         else {
             totalRotations = (searchResult.length / showPerLoad);
-            
+
         }; //the number of total rotations is just however many lots of 5 there are (always rounded up, e.g. 11 = 3 rotations), for now
         return totalRotations;
 
-        
+
         }
 
     function calculateSearchLimits() {

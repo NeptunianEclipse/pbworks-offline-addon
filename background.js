@@ -11,6 +11,11 @@ browser.contextMenus.create({
     title: "Download this article"
 });
 
+// browser.contextMenus.create({
+//     id: "PBwork-download-all",
+//     title: "Download all articles"
+// });
+
 
 // promise reject callback function
 function onError(error) {
@@ -70,7 +75,7 @@ function get_user_info(workspace_name, email) {
 }
 
 
-function download_page(workspace_name, current_oid_num) {
+function download_single_page(workspace_name, current_oid_num) {
     return new Promise(function (resolve, reject) {
         let pbworks = new PBWorks(workspace_name, admin_key);
         pbworks.getPageContent(current_oid_num).then((pageInfo) => {
@@ -79,27 +84,60 @@ function download_page(workspace_name, current_oid_num) {
     })
 }
 
+function download_all_pages(workspace_name) {
+    return new Promise(function (resolve, reject) {
+        let pbworks = new PBWorks(workspace_name, admin_key);
+        pbworks.getAllPages().then(r => {
+            for (let page of r) {
+                console.log(page.oid);
+                download_single_page(workspace_name, page.oid)
+                    .then(pageinfo => {
+                        console.log(pageinfo);
+                        insert(pageinfo);
+                    });
+            }
+            resolve();
+        })
+    })
+}
+
 
 function upload_page(data) {
     return new Promise((resolve, reject) => {
         console.log("begin uploading..........");
-        let workspace_name = new RegExp("http://(.+)\.pbworks.com/w/page/.*").exec(data.revurl)[1];
-        let pbworks = new PBWorks(workspace_name, admin_key);
-        console.log(user_uid);
-        pbworks.putPageContent(data.name, user_uid,data.html)
-            .then(success => {
-                resolve(success);
-                console.log("upload finish......");
-            }).catch(error => {
-            console.log(error);
-            reject(error);
-            console.log("upload fail")
-        })
+        if (data.oid < 0) {
+            let pbworks = new PBWorks(user_workspace, admin_key);
+            console.log(user_uid);
+            pbworks.putPageContent(data.name, user_uid, data.html)
+                .then(success => {
+                    resolve(success);
+                    console.log("upload finish......");
+                }).catch(error => {
+                console.log(error);
+                reject(error);
+                console.log("upload fail")
+            })
+        } else {
+            let workspace_name = new RegExp("http://(.+)\.pbworks.com/w/page/.*").exec(data.revurl)[1];
+            let pbworks = new PBWorks(workspace_name, admin_key);
+            console.log(user_uid);
+            pbworks.putPageContent(data.name, user_uid, data.html)
+                .then(success => {
+                    resolve(success);
+                    console.log("upload finish......");
+                }).catch(error => {
+                console.log(error);
+                reject(error);
+                console.log("upload fail")
+            })
+        }
+
     })
 
 }
 
-function runDownload(tab) {
+
+function runSinglePageDownload(tab) {
     let url = tab.url;
     let flag, error_string;
     console.log("url: " + url);
@@ -120,10 +158,10 @@ function runDownload(tab) {
             });
         }
 
-        if(return_flag)
+        if (return_flag)
             return -1;
 
-        download_page(workspace_name, current_oid_num)
+        download_single_page(workspace_name, current_oid_num)
             .then(function (pageInfo) {
                 if (typeof pageInfo.html === "undefined") {
                     console.log("download failed!");
@@ -170,6 +208,18 @@ function runDownload(tab) {
     }
 }
 
+
+// function runManyPagesDownload(tab) {
+//     download_all_pages(user_workspace)
+//         .then(()=>{
+//             browser.tabs.sendMessage(tab.id, {
+//                 response: true
+//             }).then(()=>{
+//                 console.log("many page download");
+//             });
+//         })
+// }
+
 //
 function handleMessage(request, sender, sendResponse) {
     if (request.message === "configuration update") {
@@ -189,14 +239,34 @@ function handleMessage(request, sender, sendResponse) {
         let page = request.data;
         upload_page(page)
             .then(success => {
-                console.log(success);
-                browser.tabs.sendMessage(
-                    request.tab_id,
-                    {response: true}
-                ).then(response => {
-                    console.log(response.response)
-                })
+                if (page.oid < 0 && success.oid) {
+                    let old_oid = page.oid;
+                    let new_oid = success.oid;
+                    get_data_oid(old_oid).then(e => {
+                        let new_page = e.target.result;
+
+                        new_page.oid = new_oid;
+                        insert(new_page);
+                        remove_data(old_oid).then((result) => {
+                            browser.tabs.sendMessage(
+                                request.tab_id,
+                                {
+                                    response: true,
+                                    new_page: true
+                                }
+                            );
+                        });
+                    });
+                } else {
+                    browser.tabs.sendMessage(
+                        request.tab_id,
+                        {response: true}
+                    ).then(response => {
+                        console.log(response.response)
+                    })
+                }
             }).catch(error => {
+            console.log(error);
             browser.tabs.sendMessage(
                 request.tab_id,
                 {response: false}
@@ -234,27 +304,30 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
                     message: "You haven't set configuration yet"
                 })
             } else {
-                runDownload(tabs[0]);
+                runSinglePageDownload(tabs[0]);
             }
 
         }, onError);
     }
+
+    // if (info.menuItemId === "PBwork-download-all") {
+    //     let querying = browser.tabs.query({currentWindow: true, active: true});
+    //     querying.then(function (tabs) {
+    //         if (!if_load_config) {
+    //             browser.tabs.sendMessage(tabs[0].id, {
+    //                 response: false,
+    //                 type: "Extension configuration",
+    //                 message: "You haven't set configuration yet"
+    //             })
+    //         } else {
+    //             runManyPagesDownload(tabs[0]);
+    //         }
+    //
+    //     }, onError);
+    // }
 });
 
 browser.tabs.onUpdated.addListener(injectScript);
-
-
-// init work
-// open_local_storage()
-//     .then(get_admin_key)
-//     .then(()=>{
-//         get_user_info(user_uid).then(object => {
-//             console.log(object);
-//         });
-//         console.log("finish init backgroud");
-//     });
-//
-//
 
 
 // 5VXfJkL9eybJ3xuycKYU
