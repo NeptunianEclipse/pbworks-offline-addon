@@ -155,7 +155,7 @@ p {
     padding-bottom: 5px;
 }
 
-#currentPage, #faq {
+#currentPage, #faq, #editorPage {
     width:95%;
     overflow:scroll;
     background-color: white;

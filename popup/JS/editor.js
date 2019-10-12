@@ -161,16 +161,5 @@ $('#button_update').click(function () {
 
 });
 
-/**
- *  This is a listener of modify title button
- *  and the callback function is "ReadPBWorkJson"
- */
-$('#button_modify_title').click(function () {
-    let article_title_selector = $('#article_title');
-    let new_title = prompt("Please enter a new Page title", article_title_selector.text());
-    if (new_title) {
-        article_title_selector.text(new_title);
-    }
-});
 
 
