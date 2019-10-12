@@ -1,3 +1,14 @@
+function Online(callback) {
+    let img = new Image();
+    img.src = 'https://www.baidu.com/favicon.ico?_t=' + Date.now(); //will change to google
+    img.onload = function () {
+        if (callback) callback(true)
+    };
+    img.onerror = function () {
+        if (callback) callback(false)
+    };
+}
+
 function handleError(error) {
     console.log(`Error: ${error}`);
 }
@@ -5,10 +16,10 @@ function handleError(error) {
 function handleResponse(message) {
     console.log(message);
     if (message.response === false) {
-        alert("upload fail");
+        alert("Upload failed");
     }
     if (message.response === true) {
-        alert("upload successfully");
+        alert("Upload successful");
     }
 
 }
@@ -27,18 +38,18 @@ function GetQueryString(name) {
 function saveLocal(object) {
     object.mtime = new Date().getTime();
     upgrade_data(object)
-    .then(event => {
+        .then(event => {
             alert("Page: " + object.name + " has been save in local!");
         }).catch(event => {
-            alert("fail")
-        })
-    }
+        alert("Error occured: Page has not saved.")
+    })
+}
 
 
-    function sendUploadObjectToBackground(object) {
-        // get tab id
-        let gettingCurrent = browser.tabs.getCurrent();
-        gettingCurrent.then((tabInfo) => {
+function sendUploadObjectToBackground(object) {
+    // get tab id
+    let gettingCurrent = browser.tabs.getCurrent();
+    gettingCurrent.then((tabInfo) => {
         let sending = browser.runtime.sendMessage({
             message: "ask for uploading",
             data: object,
@@ -57,14 +68,14 @@ browser.runtime.onMessage.addListener(request => {
     console.log("Message from the background script:");
     console.log(request);
     if (request.response === true) {
-        if(request.new_page){
+        if (request.new_page) {
             alert("New page have created in PBwork website!")
-        }else {
+        } else {
             alert("Upload successfully")
         }
     }
     if (request.response === false) {
-        alert("Upload fail because some reason")
+        alert("Error occured: upload failed")
     }
     return Promise.resolve({response: "editor.js get it"});
 });
@@ -101,17 +112,17 @@ if (oid === -1) {
 $('#button_save').click(function () {
     editor.sync();
     let new_context = $('#editor_id').val();
-    if (oid===-1){
+    if (oid === -1) {
         let page = {};
         page.name = newPageName;
         page.html = new_context;
         page.oid = new_oid;
-        insert(page).then(e=>{
+        insert(page).then(e => {
             alert("Page: " + page.name + " has been save in local!");
-        }).catch(e=>{
+        }).catch(e => {
             alert("fail");
         })
-    }else{
+    } else {
         console.log("begin save............");
         page.html = new_context;
         saveLocal(page);
@@ -124,6 +135,11 @@ $('#button_save').click(function () {
  * upload function will be called here
  */
 $('#button_update').click(function () {
+    Online(function (flag) {
+        if (!flag) {
+            alert("You are currently not connected, please try again later");
+        }
+    });
     editor.sync();
     let new_context = $('#editor_id').val();
     if (oid === -1) {
@@ -131,13 +147,14 @@ $('#button_update').click(function () {
         page.name = newPageName;
         page.html = new_context;
         page.oid = new_oid;
-        insert(page).then(e=>{
+        insert(page).then(e => {
             alert("Page: " + page.name + " has been save in local!");
-        }).catch(e=>{
+        }).catch(e => {
             alert("fail");
         });
         sendUploadObjectToBackground(page);
-    }else{
+    } else {
+        page.html = new_context;
         saveLocal(page);
         sendUploadObjectToBackground(page);
     }

@@ -23,14 +23,15 @@ Online(function (flag) {
 });
 
 document.addEventListener("click", function (e) {
-    if (!(e.target.tagName === "BUTTON")) {
-        console.log(e.target.tagName);
-        return;
+    var url_view_modify;
+    if (e.target.textContent === "View Local Pages") {
+        url_view_modify = "Homepage.html";
+        browser.tabs.create({
+            url: url_view_modify
+        });
     }
-    let url_view_modify = "Homepage.html";
-    if (e.target.textContent === "Download Pages") {
-        console.log("click!!!!!")
-    } else if (e.target.textContent === "View Local Pages") {
+    else if (e.target.textContent === "Help") {
+        url_view_modify = "faq.html";
         browser.tabs.create({
             url: url_view_modify
         });
@@ -43,7 +44,7 @@ function handleMessage(request, sender, sendResponse){
         if (request.status === true){
             let node = $("#config_status");
             let css = { "font-size": "1.2em", "color": "#009933", "text-align": "center"};
-            node.text("You have set user configuration");
+            node.text("You have set your user configurations");
             node.css(css);
         }
     }

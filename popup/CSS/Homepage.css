@@ -155,7 +155,7 @@ p {
     padding-bottom: 5px;
 }
 
-#currentPage {
+#currentPage, #faq {
     width:95%;
     overflow:scroll;
     background-color: white;
@@ -168,8 +168,8 @@ p {
 
 
 
-.backB, .editLink, .viewButton, .editPage, #button_save, #button_modify_title, #button_update {
-    /*Back button that appears on single page viewer*/
+.nextSearchPages, .previousSearchPages, .backB, .editLink, .viewButton, .editPage, #button_save, #button_modify_title, #button_update {
+    /*Standard Button display for editor/homepage, variations below*/
     display: inline-block;
     width: 70px;
     padding: 9px;
@@ -187,6 +187,28 @@ p {
     margin-bottom:10px;
 }
 
+.displayNumberForm {
+    display:none;
+    float:right;
+    margin-top:15px;
+    margin-right:15px;
+}
+
+.displayNumberForm p{
+    font-size:18px;
+}
+
+.nextSearchPages {
+    float:right;
+    margin-right:2%;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.previousSearchPages {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
 .editLink, .editPage {
     /*Edit 'button' is actually just a link*/
@@ -197,11 +219,17 @@ p {
 
 .viewButton, .editPage, #button_save, #button_update {
     float:right;
-    margin-right:20px
+    margin-right:20px;
 }
 
+    #button_update:disabled {
+        opacity:0.5;
+    }
 
-#button_modify_title{
+
+
+
+#button_modify_title {
     width: 110px;
     margin-left: 50px;
 }
@@ -213,6 +241,7 @@ p {
     margin-left: 20px;
     margin-top: 10px;
     padding: 10px;
+    clear:both;
 }
 
     .pageDetails h2 {
@@ -223,3 +252,12 @@ p {
         font-family: Verdana;
         font-size: 14px;
     }
+
+#helpLink {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+    margin: 0 auto;
+    text-align:center;
+    display:block;
+    padding-top:5px;
+}
