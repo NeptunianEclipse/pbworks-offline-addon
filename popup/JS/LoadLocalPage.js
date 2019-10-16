@@ -382,13 +382,26 @@ $(document).ready(function () {
             comment = singlePage.comment;
         }
 
-        var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a> </h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
-        var stringEntry1 = "<br><p>OID: " + singlePage.oid + "</p>";
-        var editTime = "<p>Last Modified: " + singlePage.edittime + "</p>";
-        var viewEntry = "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>";
-        var editEntry = '<a href=' + editor_url + ' class="editPage">Edit</a>';
+        if (singlePage.author === undefined) {
+            comment = "This page only exists locally"
+            var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a> </h2>" + "<p> <i>" + comment + "</i> <br>Last edited by you</p>";
+            var stringEntry1 = "<br><p>OID: None</p>";
+            var editTime = "<p>Last Modified: " + singlePage.edittime + "</p>";
+            var viewEntry = "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>";
+            var editEntry = '<a href=' + editor_url + ' class="editPage">Edit</a>';
 
-        $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + editTime + editEntry + viewEntry + "</div>");
+            $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + editTime + editEntry + viewEntry + "</div>");
+        }
+
+        else {
+            var stringEntry = "<h2>" + "<a href=" + editor_url + ">" + singlePage.name + "</a> </h2>" + "<p> <i>" + comment + "</i> <br> Last edited online by " + singlePage.author.name + "</p>";
+            var stringEntry1 = "<br><p>OID: " + singlePage.oid + "</p>";
+            var editTime = "<p>Last Modified: " + singlePage.edittime + "</p>";
+            var viewEntry = "<button name='view-" + pageArrayNumber + "' type='button' class='viewButton'>View</button>";
+            var editEntry = '<a href=' + editor_url + ' class="editPage">Edit</a>';
+
+            $("#currentPage").append("<div class='pageDetails'>" + stringEntry + stringEntry1 + editTime + editEntry + viewEntry + "</div>");
+        }
     }
 
 
