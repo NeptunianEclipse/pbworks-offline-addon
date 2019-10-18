@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>FAQ | Jam</title>
+    <link rel="icon" type="image/png" href="../assets/img/jamLogo.png">
+    <script src="../jquery-3.4.1.min.js"></script>
+    <script src="../data_base_api.js"></script>
+    <script src="JS/LoadLocalPage.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/faq.css" />
+    <link rel="stylesheet" type="text/css" href="CSS/Homepage.css" />
+    <link href="../src/themes/default/default.css" rel="stylesheet" type="text/css">
+    <link href="../src/themes/editor/editor.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <header>
+        <div id="leftHeader" class="inline">
+            <a href="Homepage.html"><img src="../assets/img/jamTextWhite.png" id="mainJam" class="jamHeader inline" /></a>
+            <a href="Homepage.html"><img src="../assets/img/jamText.png" id="hoverJam" class="jamHeader inline" /></a>
+
+
+        </div>
+
+        <p id="internetStatus" class="internetDependent">Loading . . .</p>
+        <img src="../assets/img/newPage.png" id="createNewPage" />
+
+        <div id="homeDisplayButton">
+            <a href="Homepage.html">
+                <img id="mainHome" src="../assets/img/homeWhite.png" class="searchDisplay inline" />
+                <img id="hoverHome" src="../assets/img/homeBlack.png" class="searchDisplay inline" />
+            </a>
+        </div>
+
+    </header>
+    <div id="localFrame">
+        <p id="faqName">Frequently Asked Questions</p>
+        <div id="faq">
+            <p class="question">How do I set my user preferences?</p>
+            <p class="answer">Go to your addon settings page in Firefox (by typing 'about:addons'), select the PBWorks offline editor, and add your details under the options tab. Note that you will need to have the admin key for your workspace to download and upload pages.</p>
+            <br />
+            <p class="question">How do I download a page from PBWorks?</p>
+            <p class="answer">Once you have saved your details, right click on a page from your workspace and select 'Download This Article'. This may take a few seconds, and you will be alerted once it is complete.</p>
+            <br />
+            <p class="question">I clicked 'Download this Article', why is it not downloading?</p>
+            <br />
+            <p class="answer">There may be one of several reasons why the page is not downloading:</p>
+            <ul id="answerList">
+                <li>You have not saved your details/the admin key. Pages can only be downloaded with the workspace admin key.</li>
+                <li>The admin key has been updated on the workspace, and you will need to update your key</li>
+                <li>The page has no associated page ID, and is only used for navigation. These pages cannot be downloaded</li>
+                <li>You are not connected to the internet, or your connection has been disrupted</li>
+                <li>PBWorks API may not be responding</li>
+            </ul>
+
+            <p class="question">Is this an official PBWorks addon?</p>
+            <br />
+            <p class="answer">No, this is an open source project. We have no formal relationship with PBWorks.</p>
+
+            <br />
+        </div>
+
+    </div>
+
+    </body>
+</html>

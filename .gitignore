@@ -259,18 +259,18 @@ GitHub.sublime-settings
 # Ignore all local history of files
 .history
 
-### Web ###
-*.asp
-*.cer
-*.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
-*.rss
-*.xhtml
+#### Web ###
+#*.asp
+#*.cer
+#*.csr
+#*.css
+#*.htm
+#*.html
+#*.js
+#*.jsp
+#*.php
+#*.rss
+#*.xhtml
 
 ### WebStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
@@ -371,6 +371,7 @@ mono_crash.*
 
 # Build results
 [Dd]ebug/
+
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/

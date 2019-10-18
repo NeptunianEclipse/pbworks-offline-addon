@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Home | Jam</title>
+    <link rel="icon" type="image/png" href="../assets/img/jamLogo.png">
+    <script src="../jquery-3.4.1.min.js"></script>
+    <script src="../data_base_api.js"></script>
+    <script src="JS/LoadLocalPage.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/Homepage.css" />
+
+</head>
+<body>
+    <header>
+        <div id="leftHeader" class="inline">
+            <a href="Homepage.html"><img src="../assets/img/jamTextWhite.png" id="mainJam" class="jamHeader inline" /></a>
+            <a href="Homepage.html"><img src="../assets/img/jamText.png" id="hoverJam" class="jamHeader inline" /></a>
+        </div>
+
+        <p id="internetStatus" class="internetDependent">Loading . . .</p>
+        <img title="Create New Page" src="../assets/img/newPage.png" id="createNewPage" />
+
+        <div title="Search Local Pages" id="searchDisplayButton">
+            <img id="mainSearchImg" src="../assets/img/searchWhite.png" class="searchDisplay inline" />
+            <img id="hoverSearchImg" src="../assets/img/searchBlack.png" class="searchDisplay inline" />
+        </div>
+
+
+        <div id="searchDiv">
+            <form>
+                <fieldset id="fieldSearch">
+                    <legend>Search</legend>
+                    <input id="searchOid" type="radio" name="style" value="1" /><label for="searchOid">ID</label>
+                    <input id="searchName" type="radio" name="style" value="2" checked /><label for="searchName">Title</label>
+                    <input id="searchAuthor" type="radio" name="style" value="3" /><label for="searchAuthor">Last Author</label>
+                    <input id="searchVersion" type="radio" name="style" value="4" /><label for="searchVersion">Previous Versions</label><br />
+                    <input type="text" id="searchBy" placeholder="Search locally . . ." class="inline" />
+                    <input type="button" id="searchByWhat" class="inline" value="Search">
+                </fieldset>
+            </form>
+        </div>
+
+
+    </header>
+
+    
+
+    <div id="localFrame">
+
+        <p id="localPage" class="inline">Current Homepage</p>
+        <form id="displayNumberForm">
+            <label style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Display pages:</label>
+            <select id="displayNumber">
+                <option value=15>15</option>
+                <option value=30>30</option>
+                <option value=60>60</option>
+            </select>
+        </form>
+        <div id="frameHeader"></div>
+        <div id="currentPage"></div>
+        <a href="faq.html" id="helpLink">Frequently Asked Questions</a>
+    </div>
+
+</body>
+
+
+</html>

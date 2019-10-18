@@ -1,0 +1,14 @@
+body h1 {
+    text-align: center;
+}
+
+/* container */
+.ke-container {
+    display: block;
+    border: 1px solid #CCCCCC;
+    background-color: #FFF;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 0;
+}
+

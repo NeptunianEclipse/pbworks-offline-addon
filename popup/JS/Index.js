@@ -1,49 +1,59 @@
-
-function Online(callback){
+function Online(callback) {
     let img = new Image();
     img.src = 'https://www.baidu.com/favicon.ico?_t=' + Date.now(); //will change to google
-    img.onload=function(){
+    img.onload = function () {
         if (callback) callback(true)
     };
-    img.onerror=function(){
+    img.onerror = function () {
         if (callback) callback(false)
     };
 }
 
-Online(function(flag){
+Online(function (flag) {
     let internet_status_dom = $('#internet_status');
-    if(flag){
-        let css = {"font-size":"1.2em", "color":"blue","text-align":"center"};
+    if (flag) {
+        let css = { "font-size": "1.2em", "color": "#009933", "text-align": "center"};
         internet_status_dom.text("Online");
         internet_status_dom.css(css);
-    }else{
-        let css ={"font-size":"1.2em", "color":"blue", "text-align":"center"};
+    } else {
+        let css = { "font-size": "1.2em", "color": "#ff3300", "text-align": "center"};
         internet_status_dom.text("Offline");
         internet_status_dom.css(css);
     }
 });
 
 document.addEventListener("click", function (e) {
-    if (!(e.target.tagName === "BUTTON")) {
-        console.log(e.target.tagName);
-        return;
+    var url_view_modify;
+    if (e.target.textContent === "View Local Pages") {
+        url_view_modify = "Homepage.html";
+        browser.tabs.create({
+            url: url_view_modify
+        });
+    }
+    else if (e.target.textContent === "Help") {
+        url_view_modify = "faq.html";
+        browser.tabs.create({
+            url: url_view_modify
+        });
     }
 
-    console.log("click button");
-
-    let url_download = "http://confocal-manawatu.pbworks.com/w/page/16346911/Top"; // maybe change later
-    let url_view_modify = "http://www.massey.ac.nz/massey/home.cfm";// not true, need to change
-
-    let chosenPage;
-    if (e.target.textContent === "Download Pages") {
-        chosenPage = url_download
-    } else if (e.target.textContent === "View/Modify Local Pages") {
-        chosenPage = url_view_modify;
-    }
-
-    browser.tabs.create({
-        url: chosenPage
-    });
 });
+
+function handleMessage(request, sender, sendResponse){
+    if (request.message === "config status return"){
+        if (request.status === true){
+            let node = $("#config_status");
+            let css = { "font-size": "1.2em", "color": "#009933", "text-align": "center"};
+            node.text("You have set your user configurations");
+            node.css(css);
+        }
+    }
+}
+
+browser.runtime.sendMessage({
+    message: "ask for config status"
+});
+
+browser.runtime.onMessage.addListener(handleMessage);
 
 
