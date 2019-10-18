@@ -20,8 +20,8 @@ function saveOptions(e) {
 
 function restoreOptions() {
     function setCurrentChoice(result) {
-        document.querySelector("#key").value = result.pbwork_key || "5VXfJkL9eybJ3xuycKYU";
-        document.querySelector("#admin_key").textContent = result.pbwork_key || "5VXfJkL9eybJ3xuycKYU";
+        document.querySelector("#key").value = result.pbwork_key || "";
+        document.querySelector("#admin_key").textContent = result.pbwork_key || "";
     }
 
     function onError(error) {
